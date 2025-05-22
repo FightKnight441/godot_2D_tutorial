@@ -1,0 +1,66 @@
+[gd_scene load_steps=9 format=3 uid="uid://c1exjjpa0q8d1"]
+
+[ext_resource type="Script" uid="uid://11revall2wfd" path="res://main.gd" id="1_0xm2m"]
+[ext_resource type="PackedScene" uid="uid://dyk0lpr4ctkop" path="res://player.tscn" id="1_ig7tw"]
+[ext_resource type="PackedScene" uid="uid://du43tilhd10yt" path="res://mob.tscn" id="2_h2yge"]
+[ext_resource type="AudioStream" uid="uid://mse4efe8qx3u" path="res://art/House In a Forest Loop.ogg" id="3_7mycd"]
+[ext_resource type="PackedScene" uid="uid://dm5qri4m3uh6f" path="res://hud.tscn" id="4_1bvp3"]
+[ext_resource type="AudioStream" uid="uid://prhrkishl5od" path="res://art/gameover.wav" id="4_272bh"]
+[ext_resource type="Script" uid="uid://dik144f5oxghy" path="res://mob_path.gd" id="6_272bh"]
+
+[sub_resource type="Curve2D" id="Curve2D_h2yge"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, -64, -64, 0, 0, 0, 0, 544, -64, 0, 0, 0, 0, 544, 768, 0, 0, 0, 0, -64, 768, 0, 0, 0, 0, -64, -64)
+}
+point_count = 5
+
+[node name="Main" type="Node"]
+script = ExtResource("1_0xm2m")
+mob_scene = ExtResource("2_h2yge")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.173439, 0.761175, 0.901236, 1)
+
+[node name="Music" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_7mycd")
+volume_db = -25.0
+parameters/looping = true
+
+[node name="DeathSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("4_272bh")
+volume_db = -25.0
+
+[node name="Player" parent="." instance=ExtResource("1_ig7tw")]
+visible = false
+
+[node name="MobTimer" type="Timer" parent="."]
+wait_time = 0.5
+
+[node name="ScoreTimer" type="Timer" parent="."]
+
+[node name="StartTimer" type="Timer" parent="."]
+wait_time = 2.0
+one_shot = true
+
+[node name="StartPosition" type="Marker2D" parent="."]
+position = Vector2(240, 450)
+
+[node name="MobPath" type="Path2D" parent="."]
+curve = SubResource("Curve2D_h2yge")
+script = ExtResource("6_272bh")
+
+[node name="MobSpawnLocation" type="PathFollow2D" parent="MobPath"]
+position = Vector2(-64, -64)
+
+[node name="HUD" parent="." instance=ExtResource("4_1bvp3")]
+
+[connection signal="hit" from="Player" to="." method="game_over"]
+[connection signal="timeout" from="MobTimer" to="." method="_on_mob_timer_timeout"]
+[connection signal="timeout" from="ScoreTimer" to="." method="_on_score_timer_timeout"]
+[connection signal="timeout" from="StartTimer" to="." method="_on_start_timer_timeout"]
+[connection signal="start_game" from="HUD" to="." method="new_game"]
