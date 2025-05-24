@@ -1,16 +1,18 @@
 extends Path2D
 
-func draw_around_screen():
+func draw_beyond_screen():
 	var viewport = get_viewport_rect()
 	
-	var top_left = viewport.position
+	var offset = 50
+	
+	var top_left = Vector2((viewport.position.x - offset), (viewport.position.y - offset))
 	print(top_left)
-	var top_right = Vector2(viewport.end.x,viewport.position.y)
-	print(top_left)
-	var bottom_right = viewport.end
-	print(top_left)
-	var bottom_left = Vector2(viewport.position.x, viewport.end.y)
-	print(top_left)
+	var top_right = Vector2((viewport.end.x + offset),(viewport.position.y - offset))
+	print(top_right)
+	var bottom_right = Vector2(viewport.end.x + offset, viewport.end.y + offset)
+	print(bottom_right)
+	var bottom_left = Vector2(viewport.position.x - offset , viewport.end.y + offset)
+	print(bottom_left)
 	
 	curve.set_point_position(0, top_left)
 	curve.set_point_position(1, top_right)

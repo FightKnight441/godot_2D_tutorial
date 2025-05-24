@@ -4,7 +4,7 @@ extends Node
 var score
 
 func _ready():
-	$MobPath.draw_around_screen()
+	$MobPath.draw_beyond_screen()
 
 func game_over():
 	$ScoreTimer.stop()
@@ -48,7 +48,6 @@ func _on_mob_timer_timeout():
 
 	# Spawn the mob by adding it to the Main scene.
 	add_child(mob)
-	
 	
 func _on_score_timer_timeout():
 	score += 1
