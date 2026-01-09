@@ -37,13 +37,13 @@ height = 66.0
 
 [node name="Player" type="Area2D"]
 script = ExtResource("1_sweqy")
+projectileCoolDown = 0.3
 metadata/_edit_group_ = true
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 scale = Vector2(0.5, 0.5)
 sprite_frames = SubResource("SpriteFrames_dw050")
 animation = &"up"
-frame_progress = 0.445875
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CapsuleShape2D_b26j0")

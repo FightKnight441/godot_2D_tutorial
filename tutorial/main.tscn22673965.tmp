@@ -6,9 +6,9 @@
 [ext_resource type="AudioStream" uid="uid://mse4efe8qx3u" path="res://art/House In a Forest Loop.ogg" id="3_7mycd"]
 [ext_resource type="PackedScene" uid="uid://dm5qri4m3uh6f" path="res://hud.tscn" id="4_1bvp3"]
 [ext_resource type="AudioStream" uid="uid://prhrkishl5od" path="res://art/gameover.wav" id="4_272bh"]
-[ext_resource type="PackedScene" uid="uid://b1pqf7rtm64bc" path="res://projectile.tscn" id="6_4c57u"]
 [ext_resource type="Script" uid="uid://dik144f5oxghy" path="res://mob_path.gd" id="6_272bh"]
 [ext_resource type="Script" uid="uid://dec4uvv0nxacq" path="res://shooting_marker.gd" id="6_kek77"]
+[ext_resource type="PackedScene" uid="uid://b3x1ava07d17o" path="res://projectile.tscn" id="9_4c57u"]
 
 [sub_resource type="Curve2D" id="Curve2D_h2yge"]
 _data = {
@@ -38,7 +38,8 @@ stream = ExtResource("4_272bh")
 volume_db = -25.0
 
 [node name="Player" parent="." instance=ExtResource("1_ig7tw")]
-projectile_scene = ExtResource("6_4c57u")
+visible = false
+speed = null
 
 [node name="MobTimer" type="Timer" parent="."]
 wait_time = 0.5
@@ -64,7 +65,9 @@ position = Vector2(-64, -64)
 
 [node name="HUD" parent="." instance=ExtResource("4_1bvp3")]
 
-[connection signal="hit" from="Player" to="." method="game_over"]
+[node name="projectile" parent="." instance=ExtResource("9_4c57u")]
+script = null
+
 [connection signal="timeout" from="MobTimer" to="." method="_on_mob_timer_timeout"]
 [connection signal="timeout" from="ScoreTimer" to="." method="_on_score_timer_timeout"]
 [connection signal="timeout" from="StartTimer" to="." method="_on_start_timer_timeout"]
