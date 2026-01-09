@@ -29,21 +29,18 @@ func _process(delta):
 
 	if velocity.length() > 0:
 		velocity = velocity.normalized() * speed
+		if velocity.x < 0:
+			$AnimatedSprite2D.flip_h = false
+		else:
+			$AnimatedSprite2D.flip_h = true
+		$AnimatedSprite2D.animation = "Run"
 		$AnimatedSprite2D.play()
 	else:
-		$AnimatedSprite2D.stop()
+		$AnimatedSprite2D.animation = "Stand"
+		
 	
 	position += velocity * delta
 	position = position.clamp(Vector2.ZERO, screen_size)
-
-	if velocity.x != 0:
-		$AnimatedSprite2D.animation = "walk"
-		$AnimatedSprite2D.flip_v = false
-		# See the note below about the following boolean assignment.
-		$AnimatedSprite2D.flip_h = velocity.x < 0
-	elif velocity.y != 0:
-		$AnimatedSprite2D.animation = "up"
-		$AnimatedSprite2D.flip_v = velocity.y > 0
 
 func start(pos):
 	position = pos
