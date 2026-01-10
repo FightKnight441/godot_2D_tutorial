@@ -1,6 +1,7 @@
 extends Area2D
 signal hit
 signal status_change
+
 @export var projectile_scene: PackedScene
 @export var projectileCoolDown : float = 1.0
 @export var invulnerableTimer : float = 1.0
@@ -8,16 +9,17 @@ signal status_change
 var screen_size # Size of the game window.
 enum {STANDING, RUNNING, DODGING, ATTACKING, GUARDING, DYING} # states the players can be in
 var state = STANDING #current state player is in
+
 # Called when the node enters the scene tree for the first time.
 @export var maxHealth : float = 120
 @export var health : float = 120
-@export var maxStamina = 120
-@export var stamina = 120
-@export var defense = 12
-@export var resistence = 12
-@export var strength = 12
-@export var spirit = 12
-@export var speed = 400 # How fast the player will move (pixels/sec).
+@export var maxStamina : float = 120
+@export var stamina : float = 120
+@export var defense : float = 12
+@export var resistence : float = 12
+@export var strength : float = 12
+@export var spirit : float = 12
+@export var speed : float = 400 # How fast the player will move (pixels/sec).
 
 func _ready():
 	screen_size = get_viewport_rect().size
@@ -82,14 +84,15 @@ func _process(delta):
 				if (currentProjectileCooldown <= 0):
 					_fire_projectile()
 		DODGING:
-			print("how?")
+			print("howdodgeing?")
 		ATTACKING:
-			print("how?")
+			print("how do attack?")
 		GUARDING:
-			print("how?")
+			print("how guard, boy?")
 		DYING:
 			$AnimatedSprite2D.animation = "Stand"
 			$AnimatedSprite2D.rotation = (3.14/2)
+			$AnimatedSprite2D.stop()
 			# Must be deferred as we can't change physics properties on a physics callback.
 			$CollisionShape2D.set_deferred("disabled", true)
 			hit.emit()
@@ -97,6 +100,13 @@ func _process(delta):
 	
 	position += velocity * delta
 	position = position.clamp(Vector2.ZERO, screen_size)
+	
+	if (invulnerableTimer >0):
+		
+		var intensity = 1 + (0.353 * ((Time.get_ticks_msec() % 250)/250.0))
+		$AnimatedSprite2D.self_modulate = Color(intensity, intensity/2, intensity/2)
+	else:
+		$AnimatedSprite2D.self_modulate = Color(1,1,1)
 
 func start(pos):
 	position = pos
@@ -109,7 +119,7 @@ func _on_body_entered(_body):
 	if (invulnerableTimer <= 0): 
 		health -= 20
 		status_change.emit()
-		invulnerableTimer = 2
+		invulnerableTimer = 1
 
 func _fire_projectile():
 	currentProjectileCooldown = projectileCoolDown
