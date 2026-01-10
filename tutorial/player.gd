@@ -1,19 +1,36 @@
 extends Area2D
 signal hit
+signal status_change
 @export var projectile_scene: PackedScene
-@export var speed = 400 # How fast the player will move (pixels/sec).
 @export var projectileCoolDown : float = 1.0
+@export var invulnerableTimer : float = 1.0
 @export var currentProjectileCooldown : float = 1.0
 var screen_size # Size of the game window.
+enum {STANDING, RUNNING, DODGING, ATTACKING, GUARDING, DYING} # states the players can be in
+var state = STANDING #current state player is in
 # Called when the node enters the scene tree for the first time.
+@export var maxHealth : float = 120
+@export var health : float = 120
+@export var maxStamina = 120
+@export var stamina = 120
+@export var defense = 12
+@export var resistence = 12
+@export var strength = 12
+@export var spirit = 12
+@export var speed = 400 # How fast the player will move (pixels/sec).
 
 func _ready():
 	screen_size = get_viewport_rect().size
 	hide()
+	$AnimatedSprite2D.play()
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
+	#remove time from timers
 	currentProjectileCooldown -= delta
+	invulnerableTimer -= delta
+	
+	
 	var velocity = Vector2.ZERO # The player's movement vector.
 	if Input.is_action_pressed("move_right"):
 		velocity.x += 1
@@ -23,21 +40,60 @@ func _process(delta):
 		velocity.y += 1
 	if Input.is_action_pressed("move_up"):
 		velocity.y -= 1
-	if Input.is_action_pressed("left_click_fire"):
-		if (currentProjectileCooldown <= 0):
-			_fire_projectile()
 
-	if velocity.length() > 0:
-		velocity = velocity.normalized() * speed
-		if velocity.x < 0:
-			$AnimatedSprite2D.flip_h = false
-		else:
-			$AnimatedSprite2D.flip_h = true
-		$AnimatedSprite2D.animation = "Run"
-		$AnimatedSprite2D.play()
-	else:
-		$AnimatedSprite2D.animation = "Stand"
-		
+	#dertermine state transition based on user inputs/
+	#and game circumstances
+	if health <= 0:
+		state = DYING
+	
+	match state:
+		STANDING:
+			if velocity != Vector2.ZERO:
+				state = RUNNING
+		RUNNING:
+			if velocity == Vector2.ZERO:
+				state = STANDING
+		DODGING:
+			print("how?")
+		ATTACKING:
+			print("how?")
+		GUARDING:
+			print("how?")
+	
+	
+	#perform state logic
+	match state:
+		STANDING:
+			$AnimatedSprite2D.animation = "Stand"
+			
+			if Input.is_action_pressed("left_click_fire"):
+				if (currentProjectileCooldown <= 0):
+					_fire_projectile()
+		RUNNING:
+			$AnimatedSprite2D.animation = "Run"
+			if velocity.length() > 0:
+				velocity = velocity.normalized() * speed
+				if velocity.x < 0:
+					$AnimatedSprite2D.flip_h = false
+				else:
+					$AnimatedSprite2D.flip_h = true
+			
+			if Input.is_action_pressed("left_click_fire"):
+				if (currentProjectileCooldown <= 0):
+					_fire_projectile()
+		DODGING:
+			print("how?")
+		ATTACKING:
+			print("how?")
+		GUARDING:
+			print("how?")
+		DYING:
+			$AnimatedSprite2D.animation = "Stand"
+			$AnimatedSprite2D.rotation = (3.14/2)
+			# Must be deferred as we can't change physics properties on a physics callback.
+			$CollisionShape2D.set_deferred("disabled", true)
+			hit.emit()
+			
 	
 	position += velocity * delta
 	position = position.clamp(Vector2.ZERO, screen_size)
@@ -48,10 +104,12 @@ func start(pos):
 	$CollisionShape2D.disabled = false
 
 func _on_body_entered(_body):
-	hide() # Player disappears after being hit
-	hit.emit()
-	# Must be deferred as we can't change physics properties on a physics callback.
-	$CollisionShape2D.set_deferred("disabled", true)
+	#hide() # Player disappears after being hit
+	#hit.emit()
+	if (invulnerableTimer <= 0): 
+		health -= 20
+		status_change.emit()
+		invulnerableTimer = 2
 
 func _fire_projectile():
 	currentProjectileCooldown = projectileCoolDown

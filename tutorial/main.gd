@@ -55,3 +55,6 @@ func _on_score_timer_timeout():
 func _on_start_timer_timeout():
 	$MobTimer.start()
 	$ScoreTimer.start()
+	
+func _on_status_change():
+	$HUD.updateStatusBar($Player.health / $Player.maxHealth, $Player.stamina / $Player.maxStamina)

@@ -35,3 +35,7 @@ func on_start_button_pressed():
 
 func on_message_timer_timeout():
 	$Message.hide()
+	
+func updateStatusBar(healthPercent, staminaPercent):
+	$Health.scale.x = healthPercent
+	$Stamina.scale.x = staminaPercent
