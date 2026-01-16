@@ -1,13 +1,15 @@
-[gd_scene load_steps=19 format=3 uid="uid://dyk0lpr4ctkop"]
+[gd_scene load_steps=21 format=3 uid="uid://dyk0lpr4ctkop"]
 
 [ext_resource type="Texture2D" uid="uid://dfwphjkjen20u" path="res://art/playerGrey_up1.png" id="1_hqtel"]
 [ext_resource type="Script" uid="uid://b61eojkga8tfy" path="res://player.gd" id="1_sweqy"]
 [ext_resource type="Texture2D" uid="uid://dabeghcpa5nj5" path="res://art/lilGuy/lilGuy_0002.png" id="2_nvl01"]
+[ext_resource type="PackedScene" uid="uid://b1pqf7rtm64bc" path="res://projectile.tscn" id="2_q13i1"]
 [ext_resource type="Texture2D" uid="uid://cxertu8mhvigi" path="res://art/playerGrey_up2.png" id="2_sweqy"]
 [ext_resource type="Texture2D" uid="uid://brflbq4baarjb" path="res://art/lilGuy/lilGuy_0009.png" id="2_u1c27"]
 [ext_resource type="Texture2D" uid="uid://87jyeidrivwg" path="res://art/playerGrey_walk1.png" id="3_2hs0m"]
 [ext_resource type="Texture2D" uid="uid://cuaxv8djh4e2g" path="res://art/lilGuy/lilGuy_0003.png" id="3_ivps1"]
 [ext_resource type="Texture2D" uid="uid://ddnj1xuew6yh5" path="res://art/lilGuy/lilGuy_0011.png" id="3_op7ga"]
+[ext_resource type="PackedScene" uid="uid://10e6d35i6tf0" path="res://shield.tscn" id="3_pylmc"]
 [ext_resource type="Texture2D" uid="uid://bxww8bgtdilfy" path="res://art/playerGrey_walk2.png" id="4_1jxqw"]
 [ext_resource type="Texture2D" uid="uid://bwggq0i6mmm2k" path="res://art/lilGuy/lilGuy_0012.png" id="4_q13i1"]
 [ext_resource type="Texture2D" uid="uid://bciawd0lcvp02" path="res://art/lilGuy/lilGuy_0004.png" id="4_urp6f"]
@@ -104,6 +106,8 @@ height = 66.0
 
 [node name="Player" type="Area2D"]
 script = ExtResource("1_sweqy")
+projectile_scene = ExtResource("2_q13i1")
+shield_scene = ExtResource("3_pylmc")
 projectileCoolDown = 0.3
 metadata/_edit_group_ = true
 
@@ -111,7 +115,7 @@ metadata/_edit_group_ = true
 scale = Vector2(0.5, 0.5)
 sprite_frames = SubResource("SpriteFrames_dw050")
 animation = &"Attack"
-frame_progress = 0.047555976
+frame_progress = 0.764094
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CapsuleShape2D_b26j0")

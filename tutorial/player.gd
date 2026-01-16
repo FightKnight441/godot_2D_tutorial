@@ -3,6 +3,7 @@ signal hit
 signal status_change
 
 @export var projectile_scene: PackedScene
+@export var shield_scene: PackedScene
 @export var projectileCoolDown : float = 1.0
 @export var invulnerableTimer : float = 1.0
 @export var currentProjectileCooldown : float = 1.0
@@ -11,6 +12,7 @@ enum {STANDING, RUNNING, DODGING, ATTACKING, GUARDING, DYING} # states the playe
 var state = STANDING #current state player is in
 
 # Called when the node enters the scene tree for the first time.
+
 @export var maxHealth : float = 120
 @export var health : float = 120
 @export var maxStamina : float = 120
@@ -21,7 +23,15 @@ var state = STANDING #current state player is in
 @export var spirit : float = 12
 @export var speed : float = 400 # How fast the player will move (pixels/sec).
 
+@onready var main = get_parent()
+
+var shield
+
+var rng = RandomNumberGenerator.new()
+
 func _ready():
+	shield = shield_scene.instantiate()
+	add_child(shield)
 	screen_size = get_viewport_rect().size
 	hide()
 	$AnimatedSprite2D.play()
@@ -42,6 +52,14 @@ func _process(delta):
 		velocity.y += 1
 	if Input.is_action_pressed("move_up"):
 		velocity.y -= 1
+
+	if Input.is_action_pressed("left_click_fire"):
+		if (currentProjectileCooldown <= 0):
+			_fire_projectile()
+	if Input.is_action_just_pressed("right_click_fire"):
+		shield_use()
+	if Input.is_action_just_released("right_click_fire"):
+		shield_hide()
 
 	#dertermine state transition based on user inputs/
 	#and game circumstances
@@ -137,3 +155,19 @@ func _fire_projectile():
 
 	# Add projectile to the current scene
 	get_tree().current_scene.add_child(projectile)
+
+func shield_use(): # show shield when RMB held
+	print("Debug : shield_use()")
+	shield.show()
+	#shield.set_deferred("disabled", false)
+	#shield.global_position = global_position
+	# Direction from player to mouse
+func shield_hide(): # hide shield when RMB released
+	#print("Debug : shield_hide()")
+	shield.hide()
+	#shield.set_deferred("disabled", true)
+
+func get_mouse_direction():
+	var mouse_pos = get_global_mouse_position()
+	var direction = (mouse_pos - global_position).normalized()
+	return direction

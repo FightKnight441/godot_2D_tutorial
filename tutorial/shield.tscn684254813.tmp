@@ -1,0 +1,48 @@
+[gd_scene load_steps=9 format=3 uid="uid://10e6d35i6tf0"]
+
+[ext_resource type="Texture2D" uid="uid://c5rw7j0vcq5lr" path="res://art/shield/laserShield_0.png" id="1_4re53"]
+[ext_resource type="Script" uid="uid://capyqknsox63h" path="res://shield.gd" id="1_tgr6k"]
+[ext_resource type="Texture2D" uid="uid://ppbjrakd6g25" path="res://art/shield/laserShield_1.png" id="2_tgr6k"]
+[ext_resource type="Texture2D" uid="uid://cl70towhfwdhw" path="res://art/shield/laserShield_2.png" id="3_xc41h"]
+[ext_resource type="Texture2D" uid="uid://4pys61occayu" path="res://art/shield/laserShield_3.png" id="4_41k7r"]
+[ext_resource type="Texture2D" uid="uid://cssu27wlwu5w8" path="res://art/shield/laserShield_4.png" id="5_gdxae"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_275sl"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_4re53")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_xc41h")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_tgr6k")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_gdxae")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_41k7r")
+}],
+"loop": true,
+"name": &"default",
+"speed": 15.0
+}]
+
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_tgr6k"]
+a = Vector2(0, -100)
+b = Vector2(0, 94)
+
+[node name="Shield" type="RigidBody2D"]
+script = ExtResource("1_tgr6k")
+metadata/_edit_group_ = true
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+rotation = -0.0015569606
+scale = Vector2(0.4, 0.4)
+sprite_frames = SubResource("SpriteFrames_275sl")
+frame_progress = 0.6420124
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("SegmentShape2D_tgr6k")
