@@ -2,9 +2,21 @@ extends Node
 
 @export var mob_scene: PackedScene
 var score
+signal signal_score
+var killScore : int
+signal signal_killScore
 
 func _ready():
+	var screen_size = DisplayServer.screen_get_size()
+	print("Screen size: ", screen_size)
+	
+	var window_size = get_viewport().get_visible_rect().size
+	print("Window size: ", window_size)
+	
+	
+	
 	$MobPath.draw_beyond_screen()
+	
 
 func game_over():
 	$ScoreTimer.stop()
@@ -51,6 +63,7 @@ func _on_mob_timer_timeout():
 func _on_score_timer_timeout():
 	score += 1
 	$HUD.update_score(score)
+	signal_score.emit(score)
 
 func _on_start_timer_timeout():
 	$MobTimer.start()
