@@ -4,7 +4,7 @@ extends Node
 var score
 signal signal_score
 var killScore : int
-signal signal_killScore
+#signal signal_killScore
 
 func _ready():
 	var screen_size = DisplayServer.screen_get_size()
