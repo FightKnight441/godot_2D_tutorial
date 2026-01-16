@@ -9,7 +9,6 @@ func _ready():
 var direction : Vector2 = Vector2.RIGHT  # Set when spawned
 var projectileTimeOut : float
 
-
 func _process(delta: float) -> void:
 	position += direction * speed * delta
 	# Remove if off screen (optional safety)
