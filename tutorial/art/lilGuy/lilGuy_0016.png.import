@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cg1isvxjoe444"
-path="res://.godot/imported/enemySwimming_2.png-4c0cbc0732264c4ea3290340bd4a0a62.ctex"
+uid="uid://d4ilswpmxh5wa"
+path="res://.godot/imported/lilGuy_0016.png-3c696e10054c594765c87433d58d86ba.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://art/enemySwimming_2.png"
-dest_files=["res://.godot/imported/enemySwimming_2.png-4c0cbc0732264c4ea3290340bd4a0a62.ctex"]
+source_file="res://art/lilGuy/lilGuy_0016.png"
+dest_files=["res://.godot/imported/lilGuy_0016.png-3c696e10054c594765c87433d58d86ba.ctex"]
 
 [params]
 

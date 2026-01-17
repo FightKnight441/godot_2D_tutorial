@@ -19,13 +19,16 @@ config/icon="res://icon.svg"
 
 window/size/viewport_width=1920
 window/size/viewport_height=1080
-window/size/borderless=true
 window/stretch/mode="canvas_items"
 
 [editor]
 
 version_control/plugin_name="GitPlugin"
 version_control/autoload_on_startup=true
+
+[global_group]
+
+player="Players"
 
 [input]
 

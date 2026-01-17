@@ -109,9 +109,7 @@ func _process(delta):
 		GUARDING:
 			print("how guard, boy?")
 		DYING:
-			$AnimatedSprite2D.animation = "Stand"
-			$AnimatedSprite2D.rotation = (3.14/2)
-			$AnimatedSprite2D.stop()
+			$AnimatedSprite2D.animation = "Dead"
 			# Must be deferred as we can't change physics properties on a physics callback.
 			$CollisionShape2D.set_deferred("disabled", true)
 			hit.emit()

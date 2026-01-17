@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://o37xqr400kpt"
-path="res://.godot/imported/enemyWalking_2.png-67c480ed60c35e95f5acb0436246b935.ctex"
+uid="uid://cqadh03xo077w"
+path="res://.godot/imported/FluffClaw_0001.png-78805dc157f574d769b98fa67a85524b.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://art/enemyWalking_2.png"
-dest_files=["res://.godot/imported/enemyWalking_2.png-67c480ed60c35e95f5acb0436246b935.ctex"]
+source_file="res://art/FluffClaw/FluffClaw_0001.png"
+dest_files=["res://.godot/imported/FluffClaw_0001.png-78805dc157f574d769b98fa67a85524b.ctex"]
 
 [params]
 

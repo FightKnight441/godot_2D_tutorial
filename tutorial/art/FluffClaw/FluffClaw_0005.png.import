@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cxertu8mhvigi"
-path="res://.godot/imported/playerGrey_up2.png-d6aba85f5f2675ebc7045efa7552ee79.ctex"
+uid="uid://1pujkua75vi8"
+path="res://.godot/imported/FluffClaw_0005.png-9bce6c5d6cfbbe1edd023c22fb3dca6e.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://art/playerGrey_up2.png"
-dest_files=["res://.godot/imported/playerGrey_up2.png-d6aba85f5f2675ebc7045efa7552ee79.ctex"]
+source_file="res://art/FluffClaw/FluffClaw_0005.png"
+dest_files=["res://.godot/imported/FluffClaw_0005.png-9bce6c5d6cfbbe1edd023c22fb3dca6e.ctex"]
 
 [params]
 
