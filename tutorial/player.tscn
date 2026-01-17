@@ -136,7 +136,8 @@ animations = [{
 radius = 26.0
 height = 66.0
 
-[node name="Player" type="Area2D"]
+[node name="Player" type="Area2D" groups=["player"]]
+collision_mask = 3
 script = ExtResource("1_sweqy")
 projectile_scene = ExtResource("2_q13i1")
 shield_scene = ExtResource("3_pylmc")
