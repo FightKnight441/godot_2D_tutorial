@@ -32,6 +32,7 @@ var rng = RandomNumberGenerator.new()
 func _ready():
 	shield = shield_scene.instantiate()
 	add_child(shield)
+	shield_hide()
 	screen_size = get_viewport_rect().size
 	hide()
 	$AnimatedSprite2D.play()
@@ -159,12 +160,14 @@ func _fire_projectile():
 func shield_use(): # show shield when RMB held
 	print("Debug : shield_use()")
 	shield.show()
+	shield.toggleCollision()
 	#shield.set_deferred("disabled", false)
 	#shield.global_position = global_position
 	# Direction from player to mouse
 func shield_hide(): # hide shield when RMB released
 	#print("Debug : shield_hide()")
 	shield.hide()
+	shield.toggleCollision()
 	#shield.set_deferred("disabled", true)
 
 func get_mouse_direction():

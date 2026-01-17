@@ -15,8 +15,6 @@ func _process(_delta: float) -> void:
 	
 	rotation = playerToMouse.angle()
 
-
-
 func get_mouse_direction():
 	var mouse_pos = get_global_mouse_position()
 	var direction = (mouse_pos - player.global_position).normalized()
@@ -27,3 +25,9 @@ func _on_body_entered(body: Node) -> void:
 	print("Debug: Projectile collided with", body)
 	if body.is_in_group("mobs"):
 		body.queue_free()
+
+func toggleCollision():
+	if ($CollisionShape2D.disabled == true):
+		$CollisionShape2D.disabled = false
+	else:
+		$CollisionShape2D.disabled = true
