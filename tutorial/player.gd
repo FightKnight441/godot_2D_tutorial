@@ -139,10 +139,11 @@ func deliver_hit(dType, dValue, sType, sValue, fValue, fDirection, groups):
 func _on_body_entered(_body):
 	#hide() # Player disappears after being hit
 	#hit.emit()
-	if (invulnerableTimer <= 0): 
-		health -= 20
-		status_change.emit()
-		invulnerableTimer = 1
+	#if (invulnerableTimer <= 0): 
+		#health -= 20
+		#status_change.emit()
+		#invulnerableTimer = 1
+		pass
 
 func _fire_projectile():
 	currentProjectileCooldown = projectileCoolDown

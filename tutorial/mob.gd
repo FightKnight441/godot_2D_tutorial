@@ -16,7 +16,7 @@ func _ready():
 @export var speed : float = 400 # How fast the player will move (pixels/sec).
 
 func deliver_hit(dType, dValue, sType, sValue, fValue, fDirection, groups):
-	print("Debug: Mob hit!")
+	#print("Debug: Mob hit!")
 	hide() # Player disappears after being hit
 	# Must be deferred as we can't change physics properties on a physics callback.
 	$CollisionShape2D.set_deferred("disabled", true)

@@ -30,9 +30,9 @@ animations = [{
 "duration": 1.0,
 "texture": ExtResource("2_h2prw")
 }],
-"loop": true,
+"loop": false,
 "name": &"Flinch",
-"speed": 5.0
+"speed": 10.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -102,7 +102,6 @@ scale = Vector2(0.5, 0.5)
 sprite_frames = SubResource("SpriteFrames_7dpfh")
 animation = &"Pounce"
 frame = 6
-frame_progress = 0.3048695
 
 [node name="PounceAttack" parent="." instance=ExtResource("2_4mn5x")]
 position = Vector2(-5, -10)
@@ -120,3 +119,11 @@ shape = SubResource("CapsuleShape2D_2o16e")
 
 [node name="SearchTimer" type="Timer" parent="."]
 wait_time = 2.0
+
+[node name="DeathFadeTimer" type="Timer" parent="."]
+wait_time = 3.0
+
+[node name="InvulnerabilityTimer" type="Timer" parent="."]
+wait_time = 0.1
+one_shot = true
+autostart = true
