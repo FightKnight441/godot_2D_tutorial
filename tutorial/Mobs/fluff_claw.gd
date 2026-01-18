@@ -1,4 +1,4 @@
-extends RigidBody2D
+extends CharacterBody2D
 
 @export var maxHealth : float = 60
 @export var health : float = 60
@@ -12,7 +12,7 @@ extends RigidBody2D
 
 @export var wanderDistance = 1000.0
 @export var target : Vector2
-@export var invulnerableTimer : float = 1.0
+@export var invulnerableTimer : float = 0.0
 @export var searchCooldownMs : float = 2000
 var playerSpotted = false
 
@@ -27,9 +27,10 @@ func _ready() -> void:
 	$AnimatedSprite2D.play()
 	$AnimatedSprite2D.animation_finished.connect(_on_animation_finish)
 	$AnimatedSprite2D.frame_changed.connect(_on_frame_changed)
-	$Sight.area_entered.connect(_on_player_sight)
+	$Sight.body_entered.connect(_on_player_sight)
 	$SearchTimer.timeout.connect(_on_timeout)
 	$SearchTimer.start()
+	$PounceAttack.set_deferred("disabled", true)
 	
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -68,7 +69,7 @@ func _process(delta: float) -> void:
 				state = RUNNING
 		RUNNING:
 			if (goal == ATTACK):
-				linear_velocity = Vector2.ZERO
+				velocity = Vector2.ZERO
 				state = ATTACKING
 		DODGING:
 			print("how?")
@@ -85,10 +86,10 @@ func _process(delta: float) -> void:
 			$AnimatedSprite2D.animation = "Stand"
 
 		RUNNING:
-			linear_velocity = speed * (target - global_position).normalized()
+			velocity = speed * (target - global_position).normalized()
 			$AnimatedSprite2D.animation = "Run"
 			$AnimatedSprite2D.play()
-			if linear_velocity.x < 0:
+			if velocity.x < 0:
 				$AnimatedSprite2D.flip_h = false
 			else:
 				$AnimatedSprite2D.flip_h = true
@@ -108,12 +109,24 @@ func _process(delta: float) -> void:
 			# Must be deferred as we can't change physics properties on a physics callback.
 			$CollisionShape2D.set_deferred("disabled", true)
 
-			
+	move_and_slide()
+	
+	if (invulnerableTimer > 0):
+		var intensity = 1 + (0.353 * ((Time.get_ticks_msec() % 250)/250.0))
+		$AnimatedSprite2D.self_modulate = Color(intensity, intensity/2, intensity/2)
+	else:
+		$AnimatedSprite2D.self_modulate = Color(1,1,1)
 		
-func _on_player_sight(_area):
+func deliver_hit(dType, dValue, sType, sValue, fValue, fDirection, groups):
+	if (groups.has("mobs") and invulnerableTimer <= 0): 
+		health -= dValue
+		invulnerableTimer = 1
+		
+		
+func _on_player_sight(_body):
 
-	if (_area.is_in_group("player")):
-		target = _area.global_position
+	if (_body.is_in_group("player")):
+		target = _body.global_position
 		goal = CHASE
 		playerSpotted = true
 		$Sight.set_deferred("monitoring", false)
@@ -129,9 +142,12 @@ func _on_animation_finish():
 func _on_frame_changed(): 
 	if ($AnimatedSprite2D.animation == "Pounce"):
 		if ($AnimatedSprite2D.frame == 6):
-			linear_velocity = 3 * speed * (target - global_position).normalized()
+			velocity = 3 * speed * (target - global_position).normalized()
+			$PounceAttack.set_deferred("disabled", false)
 		if ($AnimatedSprite2D.frame == 7):
-			linear_velocity = Vector2.ZERO
+			velocity = Vector2.ZERO
+	else:
+		$PounceAttack.set_deferred("disabled", true)
 
 func _on_timeout():
 			#search for player

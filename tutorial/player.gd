@@ -1,11 +1,11 @@
-extends Area2D
+extends CharacterBody2D
 signal hit
 signal status_change
 
 @export var projectile_scene: PackedScene
 @export var shield_scene: PackedScene
 @export var projectileCoolDown : float = 1.0
-@export var invulnerableTimer : float = 1.0
+@export var invulnerableTimer : float = 0.0
 @export var currentProjectileCooldown : float = 1.0
 var screen_size # Size of the game window.
 enum {STANDING, RUNNING, DODGING, ATTACKING, GUARDING, DYING} # states the players can be in
@@ -32,6 +32,7 @@ var rng = RandomNumberGenerator.new()
 func _ready():
 	shield = shield_scene.instantiate()
 	add_child(shield)
+	shield_hide()
 	screen_size = get_viewport_rect().size
 	hide()
 	$AnimatedSprite2D.play()
@@ -128,6 +129,12 @@ func start(pos):
 	position = pos
 	show()
 	$CollisionShape2D.disabled = false
+	
+func deliver_hit(dType, dValue, sType, sValue, fValue, fDirection, groups):
+	if (groups.has("player") and invulnerableTimer <= 0): 
+		health -= dValue
+		status_change.emit()
+		invulnerableTimer = 1
 
 func _on_body_entered(_body):
 	#hide() # Player disappears after being hit
@@ -157,15 +164,16 @@ func _fire_projectile():
 func shield_use(): # show shield when RMB held
 	print("Debug : shield_use()")
 	shield.show()
-	#shield.set_deferred("disabled", false)
+	shield.get_node("CollisionShape2D").set_deferred("disabled", false)
 	#shield.global_position = global_position
 	# Direction from player to mouse
 func shield_hide(): # hide shield when RMB released
 	#print("Debug : shield_hide()")
 	shield.hide()
-	#shield.set_deferred("disabled", true)
+	shield.get_node("CollisionShape2D").set_deferred("disabled", true)
 
 func get_mouse_direction():
 	var mouse_pos = get_global_mouse_position()
 	var direction = (mouse_pos - global_position).normalized()
 	return direction
+	

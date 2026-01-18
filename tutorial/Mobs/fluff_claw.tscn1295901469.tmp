@@ -12,10 +12,6 @@
 [ext_resource type="Texture2D" uid="uid://vn8f3mdjspml" path="res://art/FluffClaw/FluffClaw_0002.png" id="8_6s5wa"]
 [ext_resource type="Texture2D" uid="uid://ixtanviy5bal" path="res://art/FluffClaw/FluffClaw_0003.png" id="9_rld52"]
 
-[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_h2prw"]
-radius = 654.0
-height = 1608.0
-
 [sub_resource type="SpriteFrames" id="SpriteFrames_7dpfh"]
 animations = [{
 "frames": [{
@@ -82,41 +78,46 @@ animations = [{
 radius = 70.0
 height = 212.0
 
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_h2prw"]
+radius = 654.0
+height = 1608.0
+
 [node name="FluffClaw" type="CharacterBody2D" groups=["mobs"]]
 collision_layer = 2
 collision_mask = 3
 script = ExtResource("1_h2prw")
 
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(0, -20)
+scale = Vector2(0.5, 0.5)
+sprite_frames = SubResource("SpriteFrames_7dpfh")
+animation = &"Run"
+
+[node name="PounceAttack" parent="." instance=ExtResource("2_4mn5x")]
+position = Vector2(-5, -20)
+scale = Vector2(4, 4)
+collision_layer = 0
+dType = 0
+dValue = 24.0
+sType = 2
+sValue = 0.0
+fValue = 100.0
+fDirection = Vector2(0, 0)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+visible = false
+rotation = 1.5707964
+scale = Vector2(0.5, 0.5)
+shape = SubResource("CapsuleShape2D_2o16e")
+
 [node name="Sight" type="Area2D" parent="."]
+visible = false
 scale = Vector2(0.5, 0.5)
 collision_layer = 2
 
 [node name="SightRange" type="CollisionShape2D" parent="Sight"]
 rotation = 1.5707964
 shape = SubResource("CapsuleShape2D_h2prw")
-debug_color = Color(0.14117648, 0.7411765, 0.2901961, 0.41960785)
-
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
-position = Vector2(0, -20)
-scale = Vector2(0.5, 0.5)
-sprite_frames = SubResource("SpriteFrames_7dpfh")
-animation = &"Pounce"
-frame = 6
-frame_progress = 0.3048695
-
-[node name="PounceAttack" parent="." instance=ExtResource("2_4mn5x")]
-position = Vector2(-5, -10)
-scale = Vector2(5.5, 5.5)
-collision_layer = 0
-dValue = 24.0
-sType = 2
-fValue = 100.0
-groups = Array[String](["player"])
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-rotation = 1.5707964
-scale = Vector2(0.5, 0.5)
-shape = SubResource("CapsuleShape2D_2o16e")
 
 [node name="SearchTimer" type="Timer" parent="."]
 wait_time = 2.0
