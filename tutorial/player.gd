@@ -1,11 +1,11 @@
-extends Area2D
+extends CharacterBody2D
 signal hit
 signal status_change
 
 @export var projectile_scene: PackedScene
 @export var shield_scene: PackedScene
 @export var projectileCoolDown : float = 1.0
-@export var invulnerableTimer : float = 1.0
+@export var invulnerableTimer : float = 0.0
 @export var currentProjectileCooldown : float = 1.0
 var screen_size # Size of the game window.
 enum {STANDING, RUNNING, DODGING, ATTACKING, GUARDING, DYING} # states the players can be in
@@ -129,14 +129,21 @@ func start(pos):
 	position = pos
 	show()
 	$CollisionShape2D.disabled = false
+	
+func deliver_hit(dType, dValue, sType, sValue, fValue, fDirection, groups):
+	if (groups.has("player") and invulnerableTimer <= 0): 
+		health -= dValue
+		status_change.emit()
+		invulnerableTimer = 1
 
 func _on_body_entered(_body):
 	#hide() # Player disappears after being hit
 	#hit.emit()
-	if (invulnerableTimer <= 0): 
-		health -= 20
-		status_change.emit()
-		invulnerableTimer = 1
+	#if (invulnerableTimer <= 0): 
+		#health -= 20
+		#status_change.emit()
+		#invulnerableTimer = 1
+		pass
 
 func _fire_projectile():
 	currentProjectileCooldown = projectileCoolDown
@@ -172,3 +179,4 @@ func get_mouse_direction():
 	var mouse_pos = get_global_mouse_position()
 	var direction = (mouse_pos - global_position).normalized()
 	return direction
+	

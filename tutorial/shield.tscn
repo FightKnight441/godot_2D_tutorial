@@ -35,6 +35,8 @@ a = Vector2(0, -95)
 b = Vector2(0, 92)
 
 [node name="Shield" type="Area2D"]
+collision_layer = 2
+collision_mask = 2
 script = ExtResource("1_tgr6k")
 metadata/_edit_group_ = true
 

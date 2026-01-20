@@ -21,7 +21,7 @@ func _on_visible_on_screen_notifier_2d_screen_exited():
 
 # Upon colliding mob, delete mob and projectile
 func _on_body_entered(body: Node) -> void:
-	print("Debug: Projectile collided with", body)
+	#print("Debug: Projectile collided with", body)
 	if body.is_in_group("mobs"):
-		body.queue_free()
+		#body.queue_free()
 		queue_free()

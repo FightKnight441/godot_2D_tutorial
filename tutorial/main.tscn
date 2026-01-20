@@ -2,8 +2,8 @@
 
 [ext_resource type="Script" uid="uid://11revall2wfd" path="res://main.gd" id="1_0xm2m"]
 [ext_resource type="PackedScene" uid="uid://dyk0lpr4ctkop" path="res://player.tscn" id="1_ig7tw"]
-[ext_resource type="PackedScene" uid="uid://du43tilhd10yt" path="res://mob.tscn" id="2_h2yge"]
 [ext_resource type="AudioStream" uid="uid://mse4efe8qx3u" path="res://art/House In a Forest Loop.ogg" id="3_7mycd"]
+[ext_resource type="Texture2D" uid="uid://dih82r0sbaf73" path="res://art/Background/Background_level_1.jpg" id="3_kek77"]
 [ext_resource type="PackedScene" uid="uid://dm5qri4m3uh6f" path="res://hud.tscn" id="4_1bvp3"]
 [ext_resource type="AudioStream" uid="uid://prhrkishl5od" path="res://art/gameover.wav" id="4_272bh"]
 [ext_resource type="Script" uid="uid://dik144f5oxghy" path="res://mob_path.gd" id="6_272bh"]
@@ -18,15 +18,20 @@ point_count = 5
 
 [node name="Main" type="Node"]
 script = ExtResource("1_0xm2m")
-mob_scene = ExtResource("2_h2yge")
+mob_scene = ExtResource("9_kek77")
 
 [node name="ColorRect" type="ColorRect" parent="."]
+visible = false
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 color = Color(0.173439, 0.761175, 0.901236, 1)
+
+[node name="Background" type="Sprite2D" parent="."]
+position = Vector2(960, 540)
+texture = ExtResource("3_kek77")
 
 [node name="Music" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("3_7mycd")
@@ -40,9 +45,10 @@ volume_db = -25.0
 [node name="Player" parent="." instance=ExtResource("1_ig7tw")]
 
 [node name="MobTimer" type="Timer" parent="."]
-wait_time = 0.5
+wait_time = 2.0
 
 [node name="ScoreTimer" type="Timer" parent="."]
+wait_time = 10.0
 
 [node name="StartTimer" type="Timer" parent="."]
 wait_time = 2.0
