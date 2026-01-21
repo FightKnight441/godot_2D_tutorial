@@ -1,0 +1,36 @@
+[gd_scene load_steps=6 format=3 uid="uid://bvlyyeeskkkqp"]
+
+[ext_resource type="Texture2D" uid="uid://ccxd33pw88nk7" path="res://art/drops/HealthDrop.png" id="1_dsap5"]
+[ext_resource type="Texture2D" uid="uid://crvn76yujeq1a" path="res://art/drops/HealthDrop1.png" id="2_uq01x"]
+[ext_resource type="Texture2D" uid="uid://ckoqbsbljy7nx" path="res://art/drops/HealthDrop2.png" id="3_twotr"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_nngqn"]
+radius = 70.0
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_wbwd7"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_dsap5")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_uq01x")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_twotr")
+}],
+"loop": true,
+"name": &"default",
+"speed": 10.0
+}]
+
+[node name="healthDrop" type="Area2D"]
+metadata/_edit_group_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_nngqn")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(-2, 8)
+sprite_frames = SubResource("SpriteFrames_wbwd7")
+frame_progress = 0.42738655
