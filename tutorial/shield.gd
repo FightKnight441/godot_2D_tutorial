@@ -29,3 +29,9 @@ func _on_body_entered(body: Node) -> void:
 		if (body is CharacterBody2D):
 			body.velocity = ((player.global_position - body.global_position).normalized()) * -300
 		#body.queue_free()
+
+func toggleCollision():
+	if ($CollisionShape2D.disabled == true):
+		$CollisionShape2D.disabled = false
+	else:
+		$CollisionShape2D.disabled = true

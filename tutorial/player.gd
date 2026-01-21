@@ -26,6 +26,7 @@ var state = STANDING #current state player is in
 @onready var main = get_parent()
 
 var shield
+var shieldInUse : bool = false
 
 var rng = RandomNumberGenerator.new()
 
@@ -33,6 +34,7 @@ func _ready():
 	shield = shield_scene.instantiate()
 	add_child(shield)
 	shield_hide()
+	
 	screen_size = get_viewport_rect().size
 	hide()
 	$AnimatedSprite2D.play()
@@ -42,8 +44,9 @@ func _process(delta):
 	#remove time from timers
 	currentProjectileCooldown -= delta
 	invulnerableTimer -= delta
+	replenish_stamina(delta)
 	
-	
+	#Controls
 	var velocity = Vector2.ZERO # The player's movement vector.
 	if Input.is_action_pressed("move_right"):
 		velocity.x += 1
@@ -53,14 +56,16 @@ func _process(delta):
 		velocity.y += 1
 	if Input.is_action_pressed("move_up"):
 		velocity.y -= 1
-
+	#Actions
 	if Input.is_action_pressed("left_click_fire"):
 		if (currentProjectileCooldown <= 0):
 			_fire_projectile()
 	if Input.is_action_just_pressed("right_click_fire"):
 		shield_use()
+		shieldInUse = true
 	if Input.is_action_just_released("right_click_fire"):
 		shield_hide()
+		shieldInUse = false
 
 	#dertermine state transition based on user inputs/
 	#and game circumstances
@@ -114,6 +119,7 @@ func _process(delta):
 			$CollisionShape2D.set_deferred("disabled", true)
 			hit.emit()
 			
+	status_change.emit()
 	
 	position += velocity * delta
 	position = position.clamp(Vector2.ZERO, screen_size)
@@ -133,8 +139,29 @@ func start(pos):
 func deliver_hit(dType, dValue, sType, sValue, fValue, fDirection, groups):
 	if (groups.has("player") and invulnerableTimer <= 0): 
 		health -= dValue
-		status_change.emit()
+		#status_change.emit()
 		invulnerableTimer = 1
+	
+
+func replenish_stamina(delta):
+	
+	var shieldStaminaUse : int
+	var staminaRegenAmount : int = 5
+	
+	print("Shield in use? : ", shieldInUse)
+	
+	if shieldInUse:
+		shieldStaminaUse = 10
+	else:
+		shieldStaminaUse = 0
+	
+	var calculatedStaminaChange = stamina + ((staminaRegenAmount - shieldStaminaUse) * delta)
+	
+	if calculatedStaminaChange >= maxStamina:
+		stamina = maxStamina
+	else:
+		stamina = calculatedStaminaChange
+	
 
 func _on_body_entered(_body):
 	#hide() # Player disappears after being hit
@@ -162,13 +189,15 @@ func _fire_projectile():
 	# Add projectile to the current scene
 	get_tree().current_scene.add_child(projectile)
 
-func shield_use(): # show shield when RMB held
-	print("Debug : shield_use()")
-	shield.show()
-	shield.toggleCollision()
-	#shield.set_deferred("disabled", false)
-	#shield.global_position = global_position
-	# Direction from player to mouse
+func shield_use():
+	if stamina >= 0: # show shield when RMB held
+		print("Debug: shield_use()")
+		shield.show()
+		shield.toggleCollision()
+	else:
+			print("Debug: No stamina: ", stamina)
+			shield_hide()
+
 func shield_hide(): # hide shield when RMB released
 	#print("Debug : shield_hide()")
 	shield.hide()
