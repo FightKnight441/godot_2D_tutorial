@@ -1,0 +1,17 @@
+[gd_scene load_steps=2 format=3 uid="uid://dvc1t0uakye6i"]
+
+[ext_resource type="Script" uid="uid://b52tmx66i3s4h" path="res://actor_2d.gd" id="1_iu8nk"]
+
+[node name="Actor2D" type="CharacterBody2D"]
+collision_layer = 0
+collision_mask = 0
+script = ExtResource("1_iu8nk")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+
+[node name="DeathFadeTimer" type="Timer" parent="."]
+wait_time = 3.0
+
+[node name="InvulnerabilityTimer" type="Timer" parent="."]
