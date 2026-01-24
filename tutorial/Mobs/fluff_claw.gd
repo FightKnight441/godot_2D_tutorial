@@ -1,14 +1,4 @@
-extends CharacterBody2D
-
-@export var maxHealth : float = 60
-@export var health : float = 60
-@export var maxStamina : float = 60
-@export var stamina : float = 60
-@export var defense : float = 2
-@export var resistence : float = 12
-@export var strength : float = 30
-@export var spirit : float = 12
-@export var speed : float = 300 # How fast the player will move (pixels/sec).
+extends Actor2D
 
 @export var wanderDistance = 1000.0
 @export var target : Vector2
@@ -21,6 +11,17 @@ enum {WANDER, CHASE, ATTACK, EVADE}
 var goal = WANDER
 enum {STANDING, RUNNING, DODGING, ATTACKING, GUARDING, FLINCHING, DYING} # states the players can be in
 var state = STANDING #current state player is in
+
+func _init():
+	maxHealth = 60
+	health = 60
+	maxStamina = 60
+	stamina = 60
+	defense = 6
+	resistance = 12
+	strength = 30
+	spirit = 12
+	speed = 300 # How fast the player will move (pixels/sec).
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -39,10 +40,7 @@ func _ready() -> void:
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
-	
-		
-	#invulnerableTimer -= delta
-
+	early_process_common(delta)
 	
 	#identifyGoal
 	match goal:
@@ -72,7 +70,7 @@ func _process(delta: float) -> void:
 				state = RUNNING
 		RUNNING:
 			if (goal == ATTACK):
-				velocity = Vector2.ZERO
+				#velocity = Vector2.ZERO
 				state = ATTACKING
 		DODGING:
 			print("how?")
@@ -89,7 +87,9 @@ func _process(delta: float) -> void:
 			$AnimatedSprite2D.animation = "Stand"
 
 		RUNNING:
-			velocity = speed * (target - global_position).normalized()
+			run_toward_target((target - global_position).normalized(), 1.0)
+			#if (Engine.get_frames_drawn() % 100 == 0):
+				#print("speed:", speed, " Veleng:",  velocity.length(), "V/s" , velocity.length()/delta)
 			$AnimatedSprite2D.animation = "Run"
 			$AnimatedSprite2D.play()
 			if velocity.x < 0:
@@ -101,6 +101,7 @@ func _process(delta: float) -> void:
 			print("howdodgeing?")
 		ATTACKING:
 			$AnimatedSprite2D.animation = "Pounce"
+			
 			if ((target - global_position).x < 0):
 				$AnimatedSprite2D.flip_h = false
 			else:
@@ -110,7 +111,7 @@ func _process(delta: float) -> void:
 		DYING:
 			if ($AnimatedSprite2D.animation == "Dead"):
 				$AnimatedSprite2D.self_modulate = Color(1.0,1.0,1.0,$DeathFadeTimer.get_time_left()/deathFadeMaxTime)
-			velocity = Vector2.ZERO
+			#velocity = Vector2.ZERO
 			# Must be deferred as we can't change physics properties on a physics callback.
 			
 
@@ -120,19 +121,14 @@ func _process(delta: float) -> void:
 		var intensity = 1 + (0.353 * ((Time.get_ticks_msec() % 250)/250.0))
 		$AnimatedSprite2D.self_modulate = Color(intensity, intensity/2, intensity/2)
 		
-		
+
 func deliver_hit(dType, dValue, sType, sValue, fValue, fDirection, groups):
-	if (groups.has("mobs") and $InvulnerabilityTimer.get_time_left() <= 0): 
-		
-		health -= dValue
-		$InvulnerabilityTimer.set_wait_time(0.5)
-		$InvulnerabilityTimer.start()
-		
-		if health <= 0:
-			state = DYING
-			$CollisionShape2D.set_deferred("disabled", true)
-			$AnimatedSprite2D.animation = "Flinch"
-			$AnimatedSprite2D.play()
+	super.deliver_hit(dType, dValue, sType, sValue, fValue, fDirection, groups)
+	if health <= 0:
+		state = DYING
+		$CollisionShape2D.set_deferred("disabled", true)
+		$AnimatedSprite2D.animation = "Flinch"
+		$AnimatedSprite2D.play()
 			
 			
 			
@@ -162,14 +158,18 @@ func _on_animation_finish():
 		
 func _on_animation_changed():
 	$PounceAttack.get_node("CollisionShape2D").set_deferred("disabled", true)
+	grounded = true
 
 func _on_frame_changed(): 
 	if ($AnimatedSprite2D.animation == "Pounce"):
 		if ($AnimatedSprite2D.frame == 6):
-			velocity = 3 * speed * (target - global_position).normalized()
+			grounded = false
+			run_toward_target((target - global_position).normalized(), 3.0)
+			
 			$PounceAttack.get_node("CollisionShape2D").set_deferred("disabled", false)
 		if ($AnimatedSprite2D.frame == 7):
-			velocity = Vector2.ZERO
+			grounded = true
+			#velocity = Vector2.ZERO
 	else:
 		$PounceAttack.get_node("CollisionShape2D").set_deferred("disabled", true)
 

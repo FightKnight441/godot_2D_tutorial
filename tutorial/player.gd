@@ -148,7 +148,7 @@ func replenish_stamina(delta):
 	var shieldStaminaUse : int
 	var staminaRegenAmount : int = 5
 	
-	print("Shield in use? : ", shieldInUse)
+	#print("Shield in use? : ", shieldInUse)
 	
 	if shieldInUse:
 		shieldStaminaUse = 10
@@ -191,7 +191,7 @@ func _fire_projectile():
 
 func shield_use():
 	if stamina >= 0: # show shield when RMB held
-		print("Debug: shield_use()")
+		#print("Debug: shield_use()")
 		shield.show()
 		shield.toggleCollision()
 	else:
