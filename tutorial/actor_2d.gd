@@ -15,7 +15,7 @@ var invulnerable = false
 
 @export var maxStamina : float = 30
 @export var stamina : float = 30
-@export var staminaRegenRate : float = 1.0
+@export var staminaRegenRate : float = 6.0
 var staminaRegen = true
 
 @export var defense : float = 6 #not yet used to reduce incoming physical damage
@@ -26,22 +26,12 @@ var staminaRegen = true
 @export var speed : float = 100 # How fast the player will move (pixels/sec).
 @export var friction : float = 15 #1/x of speed per second or something liek that
 @export var grounded = true
-
-#Section for Hitboxes
-#this class is used to determine the frames a hitbox needs to be active
-class HitboxFrameData extends Node:
-	@export var hitbox : String
-	@export var animation : String
-	@export var frame : String
-	
-	func _init(_hitbox : String, _animation : String, _frame : String):
-		hitbox = _hitbox
-		animation = _animation
-		frame = _frame
+var facing : Vector2 = Vector2.LEFT
 
 #the list of active hitboxes should only include hitboxes 
 var activeHitboxList : Array[String]
-@export var hitboxActiveFrameList : Array[HitboxFrameData]
+#the list of hitboxes, aniamtion, and frame that a hitbox is active during
+@export var hitboxActiveFrameList : Array[Dictionary]
 
 #Do we want poise for flinch/knockback, 
 #do we want it to work as thresholds or as a bar to be depleted? 🤔
@@ -62,6 +52,10 @@ var activeHitboxList : Array[String]
 	effectData.damageType.ICE: 1.0,
 	effectData.damageType.ELECTRIC: 1.0
 }
+
+func _physics_process(delta: float) -> void:
+	perform_friction(delta)
+	move_and_slide() 
 
 #gather data from a hitbox and use it to determine the effect of the hitbox
 #This is expected to be overridden in some cases, but generally used
@@ -111,25 +105,36 @@ func deliver_hit(dType : effectData.damageType, dValue : float,
 			#move in direction specified, regardless of orientation compared to hitbox
 			velocity += floor((fValue / forceReduction) * fDirection.normalized())
 	
+func flip_sprite_with_facing():
+	if (facing.x < 0):
+		$AnimatedSprite2D.flip_h = false
+	else:
+		$AnimatedSprite2D.flip_h = true
+
 func early_process_common(delta : float):
 	if (staminaRegen): 
 		add_stamina(staminaRegenRate * delta) #recover stamina at normal rate
+		
+func late_process_common(_delta:float):
+	if (invulnerable):
+		var intensity = 1 + (0.353 * ((Time.get_ticks_msec() % 250)/250.0))
+		$AnimatedSprite2D.self_modulate = Color(intensity, intensity/2, intensity/2)
+
+func perform_friction(delta : float):
 	#slow down due to friction
 	if (grounded): #ground friction
 		velocity = velocity * (1 - friction * delta)
 	else: #air friction not ignored
 		velocity = velocity * (1 - friction * 0.01 * delta)
 		
-func late_process_common(_delta:float):
-	pass
 	
 func deactivate_hitboxes():
 	var deactivate = true
 	for x in activeHitboxList.size():
 		for i in hitboxActiveFrameList:
-			if (i.hitbox == activeHitboxList[x] &&
-				i.animation == String($AnimatedSprite2D.animation) &&
-				i.frame == String($AnimatedSprite2D.frame)):
+			if (i["hitbox"] == activeHitboxList[x] &&
+				i["animation"] == $AnimatedSprite2D.animation &&
+				i["frame"] == $AnimatedSprite2D.frame):
 					deactivate = false
 		if (deactivate):
 			find_child(activeHitboxList[x], false, true).deactivate()
@@ -137,50 +142,50 @@ func deactivate_hitboxes():
 		
 func activate_hitboxes():
 	for x in hitboxActiveFrameList:
-		if (x.animation == $AnimatedSprite2D.animation 
-			&& x.frame == $AnimatedSprite2D.frame):
-			find_child(x.hitbox, false, true).activate(strength, spirit)
-			activeHitboxList.append(x.hitbox)
+		if (x["animation"] == $AnimatedSprite2D.animation 
+			&& x["frame"] == $AnimatedSprite2D.frame):
+			find_child(x["hitbox"], false, true).activate(strength, spirit)
+			activeHitboxList.append(x["hitbox"])
 			
 func _on_frame_changed():
 	deactivate_hitboxes()
 	activate_hitboxes()
 	
+func health_depleted():
+	pass
+	
+func stamina_depleted():
+	pass
+	
 func add_health(value : float):
-	health += value
-	if (health <0):
-		health = 0
+	health = clampf(health + value, 0, maxHealth)
+	if (health <=0):
 		health_hit_0.emit()
-	elif (health > maxHealth):
-		health = maxHealth
+		health_depleted()
 		
 func add_stamina(value : float):
 	stamina += value
-	if (stamina <0):
-		stamina = 0
+	if (stamina < 0):
 		stamina_hit_0.emit()
+		stamina_depleted()
 	elif (stamina > maxStamina):
 		stamina = maxStamina
 		
 func run_toward_target(target : Vector2, scalar : float):
-	var velocity_addition = scalar * speed * target.normalized()
-	if(velocity_addition.x > 0 && velocity.x > 0):
-		if(velocity_addition.x - velocity.x > 0):
-			velocity.x += min(speed, velocity_addition.x - velocity.x)
-	elif(velocity_addition.x < 0 && velocity.x < 0):
-		if(velocity_addition.x - velocity.x < 0):
-			velocity.x += max(-speed, velocity_addition.x - velocity.x)
-	else:
-		velocity.x += velocity_addition.x
+	var velocityAddition = scalar * speed * target.normalized()
+	facing = target.normalized()
+	var angleOfVelocity = velocity.angle_to(Vector2.RIGHT)
+	var rotatedVelocity = velocity.rotated(angleOfVelocity)
+	var rotVelocityAddition = velocityAddition.rotated(angleOfVelocity)
+	
+	if (rotVelocityAddition.x > 0): #moving in same direction of current velocity
+		if ((scalar * speed) - rotatedVelocity.x <= 0):#already over top speed
+			rotVelocityAddition.x = 0
+		else: #take our additional velocity in the direction of current velocity and scale it down to a maximum of adding up to top speed
+			rotVelocityAddition.x = clampf(rotVelocityAddition.x, 0, (scalar * speed) - rotatedVelocity.x)
 		
-	if(velocity_addition.y > 0 && velocity.y > 0):
-		if(velocity_addition.y - velocity.y > 0):
-			velocity.y += min(speed, velocity_addition.y - velocity.y)
-	elif(velocity_addition.y < 0 && velocity.y < 0):
-		if(velocity_addition.y - velocity.y < 0):
-			velocity.y += max(-speed, velocity_addition.y - velocity.y)
-	else:
-		velocity.y += velocity_addition.y
+	velocityAddition = rotVelocityAddition.rotated(-angleOfVelocity)
+	velocity += velocityAddition
 	
 	
 func get_maxHealth():

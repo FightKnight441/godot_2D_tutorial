@@ -47,7 +47,7 @@ func _process(delta):
 	replenish_stamina(delta)
 	
 	#Controls
-	var velocity = Vector2.ZERO # The player's movement vector.
+	velocity = Vector2.ZERO # The player's movement vector.
 	if Input.is_action_pressed("move_right"):
 		velocity.x += 1
 	if Input.is_action_pressed("move_left"):
@@ -121,8 +121,9 @@ func _process(delta):
 			
 	status_change.emit()
 	
-	position += velocity * delta
-	position = position.clamp(Vector2.ZERO, screen_size)
+	move_and_slide()
+	#position += velocity * delta
+	#position = position.clamp(Vector2.ZERO, screen_size)
 	
 	if (invulnerableTimer >0):
 		
@@ -176,7 +177,8 @@ func _fire_projectile():
 	currentProjectileCooldown = projectileCoolDown
 	
 	var projectile = projectile_scene.instantiate()
-	
+	projectile.userStrength = strength
+	projectile.userSpirit = spirit
 	# Spawn the bullet at the player's position
 	projectile.global_position = global_position
 

@@ -10,4 +10,5 @@ metadata/_edit_group_ = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_e062h")
+disabled = true
 debug_color = Color(0.7, 0, 0, 0.41960785)

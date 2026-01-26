@@ -38,4 +38,4 @@ func on_message_timer_timeout():
 	
 func updateStatusBar(healthPercent, staminaPercent):
 	$Health.scale.x = healthPercent
-	$Stamina.scale.x = staminaPercent
+	$Stamina.scale.x = maxf(staminaPercent, 0)

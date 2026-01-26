@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://c1exjjpa0q8d1"]
+[gd_scene load_steps=12 format=3 uid="uid://c1exjjpa0q8d1"]
 
 [ext_resource type="Script" uid="uid://11revall2wfd" path="res://main.gd" id="1_0xm2m"]
 [ext_resource type="PackedScene" uid="uid://dyk0lpr4ctkop" path="res://player.tscn" id="1_ig7tw"]
@@ -8,6 +8,7 @@
 [ext_resource type="AudioStream" uid="uid://prhrkishl5od" path="res://art/gameover.wav" id="4_272bh"]
 [ext_resource type="Script" uid="uid://dik144f5oxghy" path="res://mob_path.gd" id="6_272bh"]
 [ext_resource type="Script" uid="uid://dec4uvv0nxacq" path="res://shooting_marker.gd" id="6_kek77"]
+[ext_resource type="PackedScene" uid="uid://dwxl3wnqmjaoa" path="res://player_default.tscn" id="7_4c57u"]
 [ext_resource type="PackedScene" uid="uid://cawrrqnqk0hmd" path="res://Mobs/fluff_claw.tscn" id="9_kek77"]
 
 [sub_resource type="Curve2D" id="Curve2D_h2yge"]
@@ -43,6 +44,8 @@ stream = ExtResource("4_272bh")
 volume_db = -25.0
 
 [node name="Player" parent="." instance=ExtResource("1_ig7tw")]
+
+[node name="Player_Default" parent="." instance=ExtResource("7_4c57u")]
 
 [node name="MobTimer" type="Timer" parent="."]
 wait_time = 2.0

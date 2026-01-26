@@ -32,7 +32,6 @@ func _ready() -> void:
 	$Sight.body_entered.connect(_on_player_sight)
 	$SearchTimer.timeout.connect(_on_timeout)
 	$SearchTimer.start()
-	$PounceAttack.set_deferred("disabled", true)
 	$DeathFadeTimer.timeout.connect(_on_death_timeout)
 	deathFadeMaxTime = $DeathFadeTimer.get_wait_time()
 	$InvulnerabilityTimer.timeout.connect(_on_invlun_timeout)
@@ -55,72 +54,46 @@ func _process(delta: float) -> void:
 				else:
 					goal = WANDER
 		ATTACK: 
-			#if (global_position.distance_to(target) >= 500 || playerSpotted == false):
-				#goal = WANDER
 				pass
 		EVADE:
 			print("How we evade?")
 			goal = WANDER
-		
-	
-	
-	match state:
+
+	match state: #identify state transition based on goal
 		STANDING:
 			if (goal == WANDER || goal == CHASE || goal == EVADE):
 				state = RUNNING
 		RUNNING:
 			if (goal == ATTACK):
-				#velocity = Vector2.ZERO
 				state = ATTACKING
 		DODGING:
 			print("how?")
 		ATTACKING:
-			#wait for signal to tell us we are done attacking
 			pass
 		GUARDING:
 			print("how?")
 	
-	
-	#perform state logic
-	match state:
+	match state: #perform state logic
 		STANDING:
 			$AnimatedSprite2D.animation = "Stand"
-
 		RUNNING:
 			run_toward_target((target - global_position).normalized(), 1.0)
-			#if (Engine.get_frames_drawn() % 100 == 0):
-				#print("speed:", speed, " Veleng:",  velocity.length(), "V/s" , velocity.length()/delta)
 			$AnimatedSprite2D.animation = "Run"
 			$AnimatedSprite2D.play()
-			if velocity.x < 0:
-				$AnimatedSprite2D.flip_h = false
-			else:
-				$AnimatedSprite2D.flip_h = true
+			flip_sprite_with_facing()
 			
 		DODGING:
 			print("howdodgeing?")
 		ATTACKING:
 			$AnimatedSprite2D.animation = "Pounce"
-			
-			if ((target - global_position).x < 0):
-				$AnimatedSprite2D.flip_h = false
-			else:
-				$AnimatedSprite2D.flip_h = true
+			flip_sprite_with_facing()
 		GUARDING:
 			print("how guard, boy?")
 		DYING:
-			if ($AnimatedSprite2D.animation == "Dead"):
-				$AnimatedSprite2D.self_modulate = Color(1.0,1.0,1.0,$DeathFadeTimer.get_time_left()/deathFadeMaxTime)
-			#velocity = Vector2.ZERO
-			# Must be deferred as we can't change physics properties on a physics callback.
+			$AnimatedSprite2D.self_modulate = Color(1.0,1.0,1.0,$DeathFadeTimer.get_time_left()/deathFadeMaxTime)
 			
-
-	move_and_slide()
+	late_process_common(delta)
 	
-	if ($InvulnerabilityTimer.get_time_left() > 0):
-		var intensity = 1 + (0.353 * ((Time.get_ticks_msec() % 250)/250.0))
-		$AnimatedSprite2D.self_modulate = Color(intensity, intensity/2, intensity/2)
-		
 
 func deliver_hit(dType, dValue, sType, sValue, fValue, fDirection, groups):
 	super.deliver_hit(dType, dValue, sType, sValue, fValue, fDirection, groups)
@@ -128,9 +101,9 @@ func deliver_hit(dType, dValue, sType, sValue, fValue, fDirection, groups):
 		state = DYING
 		$CollisionShape2D.set_deferred("disabled", true)
 		$AnimatedSprite2D.animation = "Flinch"
+		state = FLINCHING
 		$AnimatedSprite2D.play()
-			
-			
+		
 			
 func _on_invlun_timeout():
 	$AnimatedSprite2D.self_modulate = Color(1,1,1)
@@ -148,30 +121,22 @@ func _on_player_sight(_body):
 
 
 func _on_animation_finish():
-
 	if ($AnimatedSprite2D.animation == "Pounce"):
 		state = RUNNING
 		goal = WANDER
 	if ($AnimatedSprite2D.animation == "Flinch"):
+		state = DYING
 		$AnimatedSprite2D.animation = "Dead"
 		$DeathFadeTimer.start()
-		
-func _on_animation_changed():
-	$PounceAttack.get_node("CollisionShape2D").set_deferred("disabled", true)
-	grounded = true
 
 func _on_frame_changed(): 
+	super._on_frame_changed()
+	grounded = true
 	if ($AnimatedSprite2D.animation == "Pounce"):
 		if ($AnimatedSprite2D.frame == 6):
 			grounded = false
 			run_toward_target((target - global_position).normalized(), 3.0)
-			
-			$PounceAttack.get_node("CollisionShape2D").set_deferred("disabled", false)
-		if ($AnimatedSprite2D.frame == 7):
-			grounded = true
-			#velocity = Vector2.ZERO
-	else:
-		$PounceAttack.get_node("CollisionShape2D").set_deferred("disabled", true)
+
 
 func _on_timeout():
 			#search for player

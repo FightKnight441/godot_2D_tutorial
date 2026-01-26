@@ -1,0 +1,157 @@
+[gd_scene load_steps=24 format=3 uid="uid://dwxl3wnqmjaoa"]
+
+[ext_resource type="Script" uid="uid://012xv8elr0n6" path="res://player_default.gd" id="1_iwbgk"]
+[ext_resource type="Texture2D" uid="uid://brflbq4baarjb" path="res://art/lilGuy/lilGuy_0009.png" id="2_5fuj7"]
+[ext_resource type="PackedScene" uid="uid://b1pqf7rtm64bc" path="res://projectile.tscn" id="2_ac2xl"]
+[ext_resource type="PackedScene" uid="uid://10e6d35i6tf0" path="res://shield.tscn" id="3_2cku8"]
+[ext_resource type="Texture2D" uid="uid://ddnj1xuew6yh5" path="res://art/lilGuy/lilGuy_0011.png" id="3_ac2xl"]
+[ext_resource type="Texture2D" uid="uid://bwggq0i6mmm2k" path="res://art/lilGuy/lilGuy_0012.png" id="4_2cku8"]
+[ext_resource type="Texture2D" uid="uid://j0erkrmv5gid" path="res://art/lilGuy/lilGuy_0019.png" id="5_tb0ic"]
+[ext_resource type="Texture2D" uid="uid://b8akkhv7dkf4l" path="res://art/lilGuy/lilGuy_0006.png" id="6_bih27"]
+[ext_resource type="Texture2D" uid="uid://dgmwv7gjlqfnc" path="res://art/lilGuy/lilGuy_0008.png" id="7_hii55"]
+[ext_resource type="Texture2D" uid="uid://bh57m6ivydg8r" path="res://art/lilGuy/lilGuy_0017.png" id="8_06ruk"]
+[ext_resource type="Texture2D" uid="uid://d4ilswpmxh5wa" path="res://art/lilGuy/lilGuy_0016.png" id="9_7cplc"]
+[ext_resource type="Texture2D" uid="uid://dlb4f4smkcbni" path="res://art/lilGuy/lilGuy_0013.png" id="10_xmtwd"]
+[ext_resource type="Texture2D" uid="uid://ocwpd7708521" path="res://art/lilGuy/lilGuy_0018.png" id="11_j1acg"]
+[ext_resource type="Texture2D" uid="uid://cklkitmxidtwm" path="res://art/lilGuy/lilGuy_0014.png" id="12_d3hhw"]
+[ext_resource type="Texture2D" uid="uid://c3vx76idfj5o6" path="res://art/lilGuy/lilGuy_0015.png" id="13_bqjm3"]
+[ext_resource type="Texture2D" uid="uid://dabeghcpa5nj5" path="res://art/lilGuy/lilGuy_0002.png" id="14_81s2t"]
+[ext_resource type="Texture2D" uid="uid://cuaxv8djh4e2g" path="res://art/lilGuy/lilGuy_0003.png" id="15_5hyyl"]
+[ext_resource type="Texture2D" uid="uid://bciawd0lcvp02" path="res://art/lilGuy/lilGuy_0004.png" id="16_m8jeq"]
+[ext_resource type="Texture2D" uid="uid://c4v6b1rvdgwfx" path="res://art/lilGuy/lilGuy_0005.png" id="17_yb4yg"]
+[ext_resource type="Texture2D" uid="uid://c5uqb0atlbl3e" path="res://art/lilGuy/lilGuy_0000.png" id="18_vpb1s"]
+[ext_resource type="Texture2D" uid="uid://bt0h8ar778o7q" path="res://art/lilGuy/lilGuy_0001.png" id="19_56bl1"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_oe5n1"]
+animations = [{
+"frames": [{
+"duration": 3.0,
+"texture": ExtResource("2_5fuj7")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_ac2xl")
+}, {
+"duration": 3.0,
+"texture": ExtResource("4_2cku8")
+}],
+"loop": true,
+"name": &"Attack",
+"speed": 15.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("5_tb0ic")
+}],
+"loop": true,
+"name": &"Dead",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("6_bih27")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_hii55")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_bih27")
+}],
+"loop": true,
+"name": &"Dodge",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("8_06ruk")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_7cplc")
+}],
+"loop": true,
+"name": &"FaceDown",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("10_xmtwd")
+}],
+"loop": true,
+"name": &"Flinch",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("11_j1acg")
+}],
+"loop": true,
+"name": &"GetUp",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("12_d3hhw")
+}],
+"loop": true,
+"name": &"KnockBack",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("13_bqjm3")
+}],
+"loop": true,
+"name": &"KnockDown",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("14_81s2t")
+}, {
+"duration": 1.0,
+"texture": ExtResource("15_5hyyl")
+}, {
+"duration": 1.0,
+"texture": ExtResource("16_m8jeq")
+}, {
+"duration": 1.0,
+"texture": ExtResource("17_yb4yg")
+}],
+"loop": true,
+"name": &"Run",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("18_vpb1s")
+}, {
+"duration": 1.0,
+"texture": ExtResource("19_56bl1")
+}],
+"loop": true,
+"name": &"Stand",
+"speed": 5.0
+}]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_h0nqg"]
+radius = 26.0
+height = 66.0
+
+[node name="Player_Default" type="CharacterBody2D"]
+collision_mask = 3
+script = ExtResource("1_iwbgk")
+projectile_scene = ExtResource("2_ac2xl")
+shield_scene = ExtResource("3_2cku8")
+metadata/_custom_type_script = "uid://debsh8cpfcy4o"
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+scale = Vector2(0.5, 0.5)
+sprite_frames = SubResource("SpriteFrames_oe5n1")
+animation = &"Stand"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CapsuleShape2D_h0nqg")
+
+[node name="InvulnerabilityTimer" type="Timer" parent="."]
+one_shot = true
+
+[node name="Timer2" type="Timer" parent="."]

@@ -151,3 +151,5 @@ animation = &"Stand"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CapsuleShape2D_b26j0")
+
+[node name="InvulnerabilityTimer" type="Timer" parent="."]

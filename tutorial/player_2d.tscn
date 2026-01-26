@@ -1,0 +1,13 @@
+[gd_scene load_steps=2 format=3 uid="uid://iumgmnfbarig"]
+
+[ext_resource type="Script" uid="uid://debsh8cpfcy4o" path="res://player_2d.gd" id="1_oo4mb"]
+
+[node name="Player2D" type="CharacterBody2D"]
+script = ExtResource("1_oo4mb")
+metadata/_custom_type_script = "uid://b52tmx66i3s4h"
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+
+[node name="InvulnerabilityTimer" type="Timer" parent="."]

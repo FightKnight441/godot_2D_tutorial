@@ -22,12 +22,13 @@ func get_mouse_direction():
 
 
 func _on_body_entered(body: Node) -> void:
-	print("Debug: Projectile collided with", body)
+	#print("Debug: Projectile collided with", body)
 	if body.is_in_group("mobs"):
 		if (body is RigidBody2D):
 			body.linear_velocity = ((player.global_position - body.global_position).normalized()) * -300
 		if (body is CharacterBody2D):
-			body.velocity = ((player.global_position - body.global_position).normalized()) * -300
+			body.velocity = body.velocity.bounce(-1.0 * player.global_position - body.global_position)
+			body.velocity += ((player.global_position - body.global_position).normalized()) * -1000
 		#body.queue_free()
 
 func toggleCollision():

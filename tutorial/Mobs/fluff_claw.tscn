@@ -27,12 +27,12 @@ animations = [{
 "speed": 5.0
 }, {
 "frames": [{
-"duration": 1.0,
+"duration": 2.0,
 "texture": ExtResource("2_h2prw")
 }],
 "loop": false,
 "name": &"Flinch",
-"speed": 10.0
+"speed": 5.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -86,6 +86,11 @@ height = 212.0
 collision_layer = 2
 collision_mask = 3
 script = ExtResource("1_h2prw")
+hitboxActiveFrameList = Array[Dictionary]([{
+"animation": &"Pounce",
+"frame": 6,
+"hitbox": "PounceAttack"
+}])
 metadata/_edit_group_ = true
 
 [node name="Sight" type="Area2D" parent="."]
@@ -101,13 +106,13 @@ debug_color = Color(0.14117648, 0.7411765, 0.2901961, 0.41960785)
 position = Vector2(0, -20)
 scale = Vector2(0.5, 0.5)
 sprite_frames = SubResource("SpriteFrames_7dpfh")
-animation = &"Pounce"
-frame = 6
+animation = &"Flinch"
 
 [node name="PounceAttack" parent="." instance=ExtResource("2_4mn5x")]
-position = Vector2(-5, -10)
-scale = Vector2(5.5, 5.5)
+position = Vector2(0, -15)
+scale = Vector2(6, 6)
 collision_layer = 0
+damageMultiplier = 1.0
 dValue = 24.0
 sType = 2
 fValue = 100.0
@@ -123,6 +128,7 @@ wait_time = 2.0
 
 [node name="DeathFadeTimer" type="Timer" parent="."]
 wait_time = 3.0
+one_shot = true
 
 [node name="InvulnerabilityTimer" type="Timer" parent="."]
 wait_time = 0.1

@@ -4,10 +4,13 @@ func _ready():
 	var projectile = Array($AnimatedSprite2D.sprite_frames.get_animation_names())
 	$AnimatedSprite2D.animation = projectile.pick_random()
 	$AnimatedSprite2D.play()
+	$Hitbox.activate(userStrength, userSpirit)
 
 @export var speed : float = 500.0
 var direction : Vector2 = Vector2.RIGHT  # Set when spawned
 var projectileTimeOut : float
+var userSpirit : float = 0
+var userStrength : float = 0
 
 func _process(delta: float) -> void:
 	position += direction * speed * delta
