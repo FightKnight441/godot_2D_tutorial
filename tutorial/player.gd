@@ -141,7 +141,12 @@ func deliver_hit(dType, dValue, sType, sValue, fValue, fDirection, groups):
 		health -= dValue
 		#status_change.emit()
 		invulnerableTimer = 1
+
+func add_health(amount):
+	health += amount
 	
+	if(health > maxHealth):
+		health = maxHealth
 
 func replenish_stamina(delta):
 	
