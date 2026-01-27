@@ -13,9 +13,12 @@ var state : int = states["STANDING"] #current state player is in
 var moveDirection : Vector2 = Vector2.ZERO
 
 func _ready():
-	$InvulnerabilityTimer.timeout.connect(_on_invlun_timeout)
+	$InvulnerabilityTimer.timeout.connect(_on_invuln_timeout)
+	
 
 func _process(_delta : float):
+	moveDirection = Vector2.ZERO
+		
 	if Input.is_action_pressed("move_right"):
 		moveDirection.x += 1
 	if Input.is_action_pressed("move_left"):
@@ -31,9 +34,13 @@ func _process(_delta : float):
 func deliver_hit(dType : effectData.damageType, dValue : float,
 	 			_sType : effectData.statusType, _sValue : float,
 	 			fValue : float, fDirection : Vector2, groups : Array[String]):
-		if(!invulnerable):
-			super.deliver_hit(dType, dValue, _sType, _sValue, fValue, fDirection, groups)
+
+		super.deliver_hit(dType, dValue, _sType, _sValue, fValue, fDirection, groups)
+		if(invulnerable == false):
+			$InvulnerabilityTimer.wait_time = 3.0
 			$InvulnerabilityTimer.start()
+			print("DEBUG: InvulnTimer start")
+			invulnerable = true
 			
 func add_health(value : float):
 	super.add_health(value)
@@ -47,9 +54,11 @@ func on_health_depleted():
 	state = states["DYING"] #TODO: dying will likely be more complicated, we can change this
 	perform_knocked_out()
 	
-func _on_invlun_timeout():
+func _on_invuln_timeout():
+	print("DEBUG: invuln Timeout")
 	$InvulnerabilityTimer.stop()
-	$InvulnerabilityTimer.wait_time = 1.0
+	$InvulnerabilityTimer.wait_time = 3.0
+	$AnimatedSprite2D.self_modulate = Color(1,1,1)
 	invulnerable = false
 	
 #this function takes in several peieces of information to determine what state we need to be in next
@@ -87,10 +96,12 @@ func process_state():
 				perform_special_action()
 			elif Input.is_action_just_pressed("attack_action", false):
 				perform_normal_action()
+			elif Input.is_action_just_pressed("projectile_action", false):
+				perform_projectile_action()
 
 		states["RUNNING"]:
+			run_toward_target(moveDirection, 1.0)
 			flip_sprite_with_facing()
-			run_toward_target(moveDirection, speed)
 			if Input.is_action_pressed("dash_action"):
 				perform_dash_action()
 			elif Input.is_action_just_pressed("interact_action", false):
@@ -101,6 +112,8 @@ func process_state():
 				perform_special_action()
 			elif Input.is_action_just_pressed("attack_action", false):
 				perform_normal_action()
+			elif Input.is_action_just_pressed("projectile_action", false):
+				perform_projectile_action()
 			
 			
 func perform_interact_action():
@@ -116,6 +129,9 @@ func perform_super_action():
 	pass
 	
 func perform_dash_action():
+	pass
+	
+func perform_projectile_action():
 	pass
 	
 func perform_knocked_out():

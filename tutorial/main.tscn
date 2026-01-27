@@ -1,7 +1,6 @@
 [gd_scene load_steps=12 format=3 uid="uid://c1exjjpa0q8d1"]
 
 [ext_resource type="Script" uid="uid://11revall2wfd" path="res://main.gd" id="1_0xm2m"]
-[ext_resource type="PackedScene" uid="uid://dyk0lpr4ctkop" path="res://player.tscn" id="1_ig7tw"]
 [ext_resource type="AudioStream" uid="uid://mse4efe8qx3u" path="res://art/House In a Forest Loop.ogg" id="3_7mycd"]
 [ext_resource type="Texture2D" uid="uid://dih82r0sbaf73" path="res://art/Background/Background_level_1.jpg" id="3_kek77"]
 [ext_resource type="PackedScene" uid="uid://dm5qri4m3uh6f" path="res://hud.tscn" id="4_1bvp3"]
@@ -44,8 +43,6 @@ parameters/looping = true
 stream = ExtResource("4_272bh")
 volume_db = -25.0
 
-[node name="Player" parent="." instance=ExtResource("1_ig7tw")]
-
 [node name="Player_Default" parent="." instance=ExtResource("7_4c57u")]
 
 [node name="MobTimer" type="Timer" parent="."]
@@ -79,9 +76,7 @@ position = Vector2(1432, 476)
 [node name="HealthOrb" parent="." instance=ExtResource("10_4c57u")]
 position = Vector2(143.83, 173.73)
 
-[connection signal="signal_score" from="." to="Player" method="_on_main_signal_score"]
-[connection signal="hit" from="Player" to="." method="game_over"]
-[connection signal="status_change" from="Player" to="." method="_on_status_change"]
+[connection signal="status_change" from="Player_Default" to="." method="_on_status_change"]
 [connection signal="timeout" from="MobTimer" to="." method="_on_mob_timer_timeout"]
 [connection signal="timeout" from="ScoreTimer" to="." method="_on_score_timer_timeout"]
 [connection signal="timeout" from="StartTimer" to="." method="_on_start_timer_timeout"]

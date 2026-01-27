@@ -30,7 +30,7 @@ func new_game():
 	$HUD.show_message("Get Ready")
 	score = 0
 	$Music.play()
-	$Player.start($StartPosition.position)
+	$Player_Default.start($StartPosition.position)
 	$StartTimer.start()
 	$HUD.update_score(score)
 	#get_tree().call_group("mobs", "queue_free")
@@ -70,4 +70,4 @@ func _on_start_timer_timeout():
 	$ScoreTimer.start()
 	
 func _on_status_change():
-	$HUD.updateStatusBar($Player.health / $Player.maxHealth, $Player.stamina / $Player.maxStamina)
+	$HUD.updateStatusBar($Player_Default.health / $Player_Default.maxHealth, $Player_Default.stamina / $Player_Default.maxStamina)

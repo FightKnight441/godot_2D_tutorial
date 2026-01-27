@@ -15,6 +15,7 @@ var shieldStamina : float = 10.0
 var rng = RandomNumberGenerator.new()
 
 func _ready():
+	super._ready()
 	maxHealth = 120
 	health = 120
 	maxStamina = 120
@@ -32,26 +33,40 @@ func _ready():
 
 	hide()
 	$AnimatedSprite2D.play()
-	self.start(Vector2(500,500))
+	#self.start(Vector2(500,500))
 	
 func _process(delta):
+	currentProjectileCooldown -= delta
+	early_process_common(delta)
 	super._process(delta)
+	if Input.is_action_just_released("right_click_fire"):
+		shield_hide()
+		shieldInUse = false
+	
 	if (shieldInUse):
 		add_stamina(-shieldStamina)
+	late_process_common(delta)
 		
 func start(pos):
 	position = pos
 	show()
-	$CollisionShape2D.disabled = false
+	$CollisionShape2D.set_deferred("disabled",  false)
 	
 func deliver_hit(dType : effectData.damageType, dValue : float,
 	 			_sType : effectData.statusType, _sValue : float,
 	 			fValue : float, fDirection : Vector2, groups : Array[String]):
-		if(!invulnerable):
-			super.deliver_hit(dType, dValue, _sType, _sValue, fValue, fDirection, groups)
-			$invulnerabilityTimer.start()
-			
+		
+		super.deliver_hit(dType, dValue, _sType, _sValue, fValue, fDirection, groups)
 
+			
+func perform_special_action():
+	shield_use()
+	shieldInUse = true
+			
+func perform_projectile_action():
+	if (currentProjectileCooldown <= 0):
+			_fire_projectile()
+	
 	
 	
 func _fire_projectile():

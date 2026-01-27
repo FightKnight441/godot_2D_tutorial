@@ -62,7 +62,7 @@ func _physics_process(delta: float) -> void:
 func deliver_hit(dType : effectData.damageType, dValue : float,
 	 			_sType : effectData.statusType, _sValue : float,
 	 			fValue : float, fDirection : Vector2, groups : Array[String]):
-	if (invulnerable):
+	if (invulnerable == true):
 		return
 	var do_damage = false
 	for x in groups:

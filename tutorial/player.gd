@@ -57,9 +57,9 @@ func _process(delta):
 	if Input.is_action_pressed("move_up"):
 		velocity.y -= 1
 	#Actions
-	if Input.is_action_pressed("left_click_fire"):
-		if (currentProjectileCooldown <= 0):
-			_fire_projectile()
+	#if Input.is_action_pressed("left_click_fire"):
+		#if (currentProjectileCooldown <= 0):
+			#_fire_projectile()
 	if Input.is_action_just_pressed("right_click_fire"):
 		shield_use()
 		shieldInUse = true
