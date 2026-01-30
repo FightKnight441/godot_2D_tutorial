@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://c1exjjpa0q8d1"]
+[gd_scene load_steps=14 format=3 uid="uid://c1exjjpa0q8d1"]
 
 [ext_resource type="Script" uid="uid://11revall2wfd" path="res://main.gd" id="1_0xm2m"]
 [ext_resource type="AudioStream" uid="uid://mse4efe8qx3u" path="res://art/House In a Forest Loop.ogg" id="3_7mycd"]
@@ -8,7 +8,6 @@
 [ext_resource type="Script" uid="uid://dik144f5oxghy" path="res://mob_path.gd" id="6_272bh"]
 [ext_resource type="Script" uid="uid://dec4uvv0nxacq" path="res://shooting_marker.gd" id="6_kek77"]
 [ext_resource type="PackedScene" uid="uid://dwxl3wnqmjaoa" path="res://player_default.tscn" id="7_4c57u"]
-[ext_resource type="Script" uid="uid://bdd2arlqd3qlu" path="res://player_camera.gd" id="8_ycdy4"]
 [ext_resource type="PackedScene" uid="uid://cawrrqnqk0hmd" path="res://Mobs/fluff_claw.tscn" id="9_kek77"]
 [ext_resource type="PackedScene" uid="uid://bxyteby4x84oc" path="res://Items/health_orb.tscn" id="10_4c57u"]
 [ext_resource type="Script" uid="uid://b6iqqf8evu8gs" path="res://sub_viewport.gd" id="11_dg77c"]
@@ -51,9 +50,6 @@ volume_db = -25.0
 
 [node name="Player_Default" parent="." instance=ExtResource("7_4c57u")]
 
-[node name="PlayerCamera" type="Camera2D" parent="Player_Default"]
-script = ExtResource("8_ycdy4")
-
 [node name="MobTimer" type="Timer" parent="."]
 wait_time = 2.0
 
@@ -80,23 +76,15 @@ position = Vector2(-64, -64)
 [node name="HUD" parent="." instance=ExtResource("4_1bvp3")]
 
 [node name="SubViewportContainer2" type="SubViewportContainer" parent="HUD"]
-anchors_preset = 1
-anchor_left = 1.0
-anchor_right = 1.0
-offset_left = -333.0
-offset_bottom = 300.0
-grow_horizontal = 0
-stretch = true
+offset_left = 1082.0
+offset_top = -370.0
+offset_right = 1594.0
+offset_bottom = 142.0
 
-[node name="SubViewport" type="SubViewport" parent="HUD/SubViewportContainer2" node_paths=PackedStringArray("camera_node", "player_node")]
+[node name="SubViewport" type="SubViewport" parent="HUD/SubViewportContainer2"]
 handle_input_locally = false
-size = Vector2i(333, 300)
 render_target_update_mode = 4
 script = ExtResource("11_dg77c")
-camera_node = NodePath("Camera2D")
-player_node = NodePath("../../../Player_Default")
-
-[node name="Camera2D" type="Camera2D" parent="HUD/SubViewportContainer2/SubViewport"]
 
 [node name="FluffClaw" parent="." instance=ExtResource("9_kek77")]
 position = Vector2(1432, 476)
