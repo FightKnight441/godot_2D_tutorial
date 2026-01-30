@@ -1,0 +1,32 @@
+[gd_scene load_steps=3 format=3 uid="uid://dvby2wtrf1wg6"]
+
+[ext_resource type="Script" uid="uid://be7uyt6twik38" path="res://enemy_2d.gd" id="1_jdjun"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_jdjun"]
+radius = 654.0
+height = 1608.0
+
+[node name="Enemy2D" type="CharacterBody2D"]
+script = ExtResource("1_jdjun")
+metadata/_custom_type_script = "uid://b52tmx66i3s4h"
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+y_sort_enabled = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+
+[node name="Sight" type="Area2D" parent="."]
+scale = Vector2(0.5, 0.5)
+collision_layer = 2
+
+[node name="SightRange" type="CollisionShape2D" parent="Sight"]
+rotation = 1.5707964
+shape = SubResource("CapsuleShape2D_jdjun")
+debug_color = Color(0.14117648, 0.7411765, 0.2901961, 0.41960785)
+
+[node name="SearchTimer" type="Timer" parent="."]
+wait_time = 2.0
+
+[node name="DeathFadeTimer" type="Timer" parent="."]
+wait_time = 3.0
+one_shot = true

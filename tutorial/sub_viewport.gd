@@ -11,6 +11,6 @@ func _ready() -> void:
 # Reference the camera and the player
 # "@export" keyword will expose these two variables in the inspector
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	# Let camera move with player
 	camera_node.position = player_node.position

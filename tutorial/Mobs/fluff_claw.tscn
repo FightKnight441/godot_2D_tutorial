@@ -78,9 +78,8 @@ animations = [{
 "speed": 6.0
 }]
 
-[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_2o16e"]
-radius = 70.0
-height = 212.0
+[sub_resource type="CircleShape2D" id="CircleShape2D_4mn5x"]
+radius = 90.0
 
 [node name="FluffClaw" type="CharacterBody2D" groups=["mobs"]]
 collision_layer = 2
@@ -106,7 +105,7 @@ debug_color = Color(0.14117648, 0.7411765, 0.2901961, 0.41960785)
 position = Vector2(0, -20)
 scale = Vector2(0.5, 0.5)
 sprite_frames = SubResource("SpriteFrames_7dpfh")
-animation = &"Flinch"
+animation = &"Pounce"
 
 [node name="PounceAttack" parent="." instance=ExtResource("2_4mn5x")]
 position = Vector2(0, -15)
@@ -115,13 +114,14 @@ collision_layer = 0
 damageMultiplier = 1.0
 dValue = 24.0
 sType = 2
-fValue = 100.0
+fValue = 1000.0
 groups = Array[String](["player"])
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+y_sort_enabled = true
 rotation = 1.5707964
 scale = Vector2(0.5, 0.5)
-shape = SubResource("CapsuleShape2D_2o16e")
+shape = SubResource("CircleShape2D_4mn5x")
 
 [node name="SearchTimer" type="Timer" parent="."]
 wait_time = 2.0
@@ -129,8 +129,3 @@ wait_time = 2.0
 [node name="DeathFadeTimer" type="Timer" parent="."]
 wait_time = 3.0
 one_shot = true
-
-[node name="InvulnerabilityTimer" type="Timer" parent="."]
-wait_time = 0.1
-one_shot = true
-autostart = true

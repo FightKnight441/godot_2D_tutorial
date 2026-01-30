@@ -3,6 +3,9 @@ class_name Actor2D extends CharacterBody2D
 signal health_hit_0
 signal stamina_hit_0
 
+var sprite : AnimatedSprite2D
+var collision : CollisionShape2D
+
 #defense damage reduction coefficient, 
 #this is to adjust the reduction number so that defense is soft bounded
 #where we want it to be value wise
@@ -150,6 +153,9 @@ func activate_hitboxes():
 func _on_frame_changed():
 	deactivate_hitboxes()
 	activate_hitboxes()
+	
+func _on_animation_finished():
+	pass
 	
 func health_depleted():
 	pass

@@ -50,6 +50,7 @@ stream = ExtResource("4_272bh")
 volume_db = -25.0
 
 [node name="Player_Default" parent="." instance=ExtResource("7_4c57u")]
+y_sort_enabled = true
 
 [node name="PlayerCamera" type="Camera2D" parent="Player_Default"]
 script = ExtResource("8_ycdy4")
@@ -104,6 +105,7 @@ position = Vector2(1432, 476)
 [node name="HealthOrb" parent="." instance=ExtResource("10_4c57u")]
 position = Vector2(143.83, 173.73)
 
+[connection signal="player_death" from="Player_Default" to="." method="game_over"]
 [connection signal="status_change" from="Player_Default" to="." method="_on_status_change"]
 [connection signal="timeout" from="MobTimer" to="." method="_on_mob_timer_timeout"]
 [connection signal="timeout" from="ScoreTimer" to="." method="_on_score_timer_timeout"]

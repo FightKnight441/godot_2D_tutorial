@@ -36,12 +36,13 @@ func _on_body_entered(body):
 			if(body.is_in_group(x)):
 				if (fValue <0):
 					fDirection = global_position
-				body.deliver_hit(dType, dValue, sType, sValue, fValue, fDirection, groups)
+				if (body is Actor2D && body.get_invulnerable() == false):
+						body.deliver_hit(dType, dValue, sType, sValue, fValue, fDirection, groups)
+				
 
 func activate(strength : float, spirit : float):
 	dValue = strength * damageMultiplier
 	sValue = spirit * statusMultiplier
-	ignoreId.clear()
 	$CollisionShape2D.disabled = false
 
 func deactivate():

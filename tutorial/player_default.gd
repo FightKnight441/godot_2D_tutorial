@@ -2,15 +2,12 @@ extends Player2D
 
 @export var projectile_scene: PackedScene
 @export var shield_scene: PackedScene
-@export var projectileCoolDown : float = 1.0
-@export var invulnerableTimer : float = 0.0
-@export var currentProjectileCooldown : float = 1.0
-
-
-
+var projectileCoolDown : float = 0.5
+var currentProjectileCooldown : float = 1.0
 var shield
 var shieldInUse : bool = false
 var shieldStamina : float = 10.0
+var invulnerabilityReset = 1.0
 
 var rng = RandomNumberGenerator.new()
 
@@ -20,6 +17,7 @@ func _ready():
 	health = 120
 	maxStamina = 120
 	stamina = 120
+	staminaRegenRate = 18
 	defense = 12
 	resistance = 12
 	strength = 12
@@ -34,23 +32,41 @@ func _ready():
 	hide()
 	$AnimatedSprite2D.play()
 	#self.start(Vector2(500,500))
+	sprite = $AnimatedSprite2D
+	collision = $CollisionShape2D
+	sprite.animation_finished.connect(_on_animation_finished)
 	
 func _process(delta):
-	currentProjectileCooldown -= delta
+	
 	early_process_common(delta)
-	super._process(delta)
+
+	late_process_common(delta)
+	
+func _physics_process(delta):
+	currentProjectileCooldown -= delta
+	super._physics_process(delta)
+	
 	if Input.is_action_just_released("right_click_fire"):
 		shield_hide()
 		shieldInUse = false
 	
 	if (shieldInUse):
-		add_stamina(-shieldStamina)
-	late_process_common(delta)
+		if (stamina <= 0 || (state != states["STANDING"] && state != states["RUNNING"])):
+			shield_hide()
+			shieldInUse = false
+		else: 
+			add_stamina(-shieldStamina * delta)
+
 		
 func start(pos):
 	position = pos
 	show()
 	$CollisionShape2D.set_deferred("disabled",  false)
+	state = states["STANDING"]
+	$AnimatedSprite2D.animation = "Stand"
+	$AnimatedSprite2D.play()
+	health = maxHealth
+	stamina = maxStamina
 	
 func deliver_hit(dType : effectData.damageType, dValue : float,
 	 			_sType : effectData.statusType, _sValue : float,
@@ -58,6 +74,25 @@ func deliver_hit(dType : effectData.damageType, dValue : float,
 		
 		super.deliver_hit(dType, dValue, _sType, _sValue, fValue, fDirection, groups)
 
+func health_depleted():
+	perform_knocked_out()
+	
+func perform_dash_action():
+	state = states["DASHING"]
+	#run_toward_target(-1.0 * facing, 3.0)
+	velocity = -3.0 * facing * speed
+	add_stamina(-12)
+	$AnimatedSprite2D.animation = "Dodge"
+	grounded = false
+	invulnerable = true
+	staminaRegen = false
+	
+func end_dash_action():
+	state = states["STANDING"]
+	$AnimatedSprite2D.animation = "Stand"
+	$AnimatedSprite2D.play()
+	staminaRegen = true
+	_on_invuln_timeout()
 			
 func perform_special_action():
 	shield_use()
@@ -94,6 +129,7 @@ func shield_use():
 		shield.toggleCollision()
 		shieldInUse = true
 		staminaRegen = false
+		add_stamina(-12.0)
 	else:
 		print("Debug: No stamina: ", stamina)
 		shield_hide()
@@ -111,3 +147,13 @@ func get_mouse_direction():
 	var direction = (mouse_pos - global_position).normalized()
 	return direction
 	
+func _on_frame_changed():
+	if ($AnimatedSprite2D.animation == "Dodge"):
+		if (sprite.frame == 1):
+			grounded = true
+	
+	
+func _on_animation_finished():
+	if ($AnimatedSprite2D.animation == "Dodge"):
+		end_dash_action()
+		

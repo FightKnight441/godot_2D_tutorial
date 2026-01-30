@@ -2,7 +2,6 @@ extends Actor2D
 
 @export var wanderDistance = 1000.0
 @export var target : Vector2
-#@export var invulnerableTimer : float = 0.0
 @export var searchCooldownMs : float = 2000
 var playerSpotted = false
 var deathFadeMaxTime: float
@@ -34,7 +33,6 @@ func _ready() -> void:
 	$SearchTimer.start()
 	$DeathFadeTimer.timeout.connect(_on_death_timeout)
 	deathFadeMaxTime = $DeathFadeTimer.get_wait_time()
-	$InvulnerabilityTimer.timeout.connect(_on_invlun_timeout)
 	
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -115,6 +113,7 @@ func _on_player_sight(_body):
 
 	if (_body.is_in_group("player")):
 		target = _body.global_position
+		facing = global_position.direction_to(_body.global_position)
 		goal = CHASE
 		playerSpotted = true
 		$Sight.set_deferred("monitoring", false)
@@ -133,9 +132,12 @@ func _on_frame_changed():
 	super._on_frame_changed()
 	grounded = true
 	if ($AnimatedSprite2D.animation == "Pounce"):
+		if ($AnimatedSprite2D.frame == 5):
+			$Sight.set_deferred("monitoring", true)
 		if ($AnimatedSprite2D.frame == 6):
 			grounded = false
 			run_toward_target((target - global_position).normalized(), 3.0)
+			$PounceAttack.fDirection = target
 
 
 func _on_timeout():
