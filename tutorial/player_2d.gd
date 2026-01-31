@@ -15,6 +15,7 @@ var invulnerabilityTime : float = 1.5
 
 func _ready():
 	$InvulnerabilityTimer.timeout.connect(_on_invuln_timeout)
+	self.add_to_group("player")
 	
 
 func _physics_process(delta : float):
@@ -36,6 +37,11 @@ func _physics_process(delta : float):
 	process_state()
 	
 	move_and_slide() 
+	
+func flash_damaged_invuln(_delta:float):
+	if ($InvulnerabilityTimer.is_stopped() == false):
+		var intensity = 1 + (0.353 * ((Time.get_ticks_msec() % 250)/250.0))
+		$AnimatedSprite2D.self_modulate = Color(intensity, intensity/2, intensity/2)
 	
 func deliver_hit(dType : effectData.damageType, dValue : float,
 	 			_sType : effectData.statusType, _sValue : float,
@@ -214,6 +220,19 @@ func perform_super_action():
 func perform_dash_action():
 	pass
 func perform_projectile_action():
+	pass
+	
+func finish_interact_action():
+	pass
+func finish_normal_action():
+	pass
+func finish_special_action():
+	pass
+func finish_super_action():
+	pass
+func finish_dash_action():
+	pass
+func finish_projectile_action():
 	pass
 	
 func perform_knocked_out():

@@ -133,7 +133,10 @@ animations = [{
 radius = 30.0
 
 [node name="Player_Default" type="CharacterBody2D" groups=["player"]]
+y_sort_enabled = true
+scale = Vector2(0.8, 0.8)
 collision_mask = 3
+motion_mode = 1
 script = ExtResource("1_iwbgk")
 projectile_scene = ExtResource("2_ac2xl")
 shield_scene = ExtResource("3_2cku8")

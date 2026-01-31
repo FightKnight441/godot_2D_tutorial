@@ -20,7 +20,7 @@ func _ready():
 	staminaRegenRate = 18
 	defense = 12
 	resistance = 12
-	strength = 12
+	strength = 36
 	spirit = 12
 	speed = 400
 	
@@ -40,7 +40,7 @@ func _process(delta):
 	
 	early_process_common(delta)
 
-	late_process_common(delta)
+	flash_damaged_invuln(delta)
 	
 func _physics_process(delta):
 	currentProjectileCooldown -= delta
@@ -86,13 +86,7 @@ func perform_dash_action():
 	grounded = false
 	invulnerable = true
 	staminaRegen = false
-	
-func end_dash_action():
-	state = states["STANDING"]
-	$AnimatedSprite2D.animation = "Stand"
-	$AnimatedSprite2D.play()
-	staminaRegen = true
-	_on_invuln_timeout()
+
 			
 func perform_special_action():
 	shield_use()
@@ -102,7 +96,12 @@ func perform_projectile_action():
 	if (currentProjectileCooldown <= 0):
 			_fire_projectile()
 	
-	
+func finish_dash_action():
+	state = states["STANDING"]
+	$AnimatedSprite2D.animation = "Stand"
+	$AnimatedSprite2D.play()
+	staminaRegen = true
+	_on_invuln_timeout()
 	
 func _fire_projectile():
 	currentProjectileCooldown = projectileCoolDown
@@ -152,8 +151,7 @@ func _on_frame_changed():
 		if (sprite.frame == 1):
 			grounded = true
 	
-	
 func _on_animation_finished():
 	if ($AnimatedSprite2D.animation == "Dodge"):
-		end_dash_action()
+		finish_dash_action()
 		

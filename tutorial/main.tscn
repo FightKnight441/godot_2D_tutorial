@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://c1exjjpa0q8d1"]
+[gd_scene load_steps=16 format=3 uid="uid://c1exjjpa0q8d1"]
 
 [ext_resource type="Script" uid="uid://11revall2wfd" path="res://main.gd" id="1_0xm2m"]
 [ext_resource type="AudioStream" uid="uid://mse4efe8qx3u" path="res://art/House In a Forest Loop.ogg" id="3_7mycd"]
@@ -10,13 +10,14 @@
 [ext_resource type="PackedScene" uid="uid://dwxl3wnqmjaoa" path="res://player_default.tscn" id="7_4c57u"]
 [ext_resource type="Script" uid="uid://bdd2arlqd3qlu" path="res://player_camera.gd" id="8_ycdy4"]
 [ext_resource type="PackedScene" uid="uid://cawrrqnqk0hmd" path="res://Mobs/fluff_claw.tscn" id="9_kek77"]
+[ext_resource type="PackedScene" uid="uid://opc6cuydykwt" path="res://fluff_tusk.tscn" id="9_w48qg"]
 [ext_resource type="PackedScene" uid="uid://bxyteby4x84oc" path="res://Items/health_orb.tscn" id="10_4c57u"]
 [ext_resource type="Script" uid="uid://b6iqqf8evu8gs" path="res://sub_viewport.gd" id="11_dg77c"]
 [ext_resource type="PackedScene" uid="uid://d1o1o1x5iunh1" path="res://examplemap.tscn" id="11_efxa6"]
 
 [sub_resource type="Curve2D" id="Curve2D_h2yge"]
 _data = {
-"points": PackedVector2Array(0, 0, 0, 0, -64, -64, 0, 0, 0, 0, 544, -64, 0, 0, 0, 0, 544, 768, 0, 0, 0, 0, -64, 768, 0, 0, 0, 0, -64, -64)
+"points": PackedVector2Array(0, 0, 0, 0, -143, -130, 0, 0, 0, 0, 544, -64, 0, 0, 0, 0, 824, 819, 0, 0, 0, 0, -64, 768, 0, 0, 0, 0, -64, -64)
 }
 point_count = 5
 
@@ -50,7 +51,7 @@ stream = ExtResource("4_272bh")
 volume_db = -25.0
 
 [node name="Player_Default" parent="." instance=ExtResource("7_4c57u")]
-y_sort_enabled = true
+position = Vector2(23, 351.00003)
 
 [node name="PlayerCamera" type="Camera2D" parent="Player_Default"]
 script = ExtResource("8_ycdy4")
@@ -76,7 +77,8 @@ curve = SubResource("Curve2D_h2yge")
 script = ExtResource("6_272bh")
 
 [node name="MobSpawnLocation" type="PathFollow2D" parent="MobPath"]
-position = Vector2(-64, -64)
+position = Vector2(-143, -130)
+rotation = 0.09577594
 
 [node name="HUD" parent="." instance=ExtResource("4_1bvp3")]
 
@@ -99,11 +101,11 @@ player_node = NodePath("../../../Player_Default")
 
 [node name="Camera2D" type="Camera2D" parent="HUD/SubViewportContainer2/SubViewport"]
 
-[node name="FluffClaw" parent="." instance=ExtResource("9_kek77")]
-position = Vector2(1432, 476)
-
 [node name="HealthOrb" parent="." instance=ExtResource("10_4c57u")]
 position = Vector2(143.83, 173.73)
+
+[node name="FluffTusk" parent="." instance=ExtResource("9_w48qg")]
+position = Vector2(536, 651)
 
 [connection signal="player_death" from="Player_Default" to="." method="game_over"]
 [connection signal="status_change" from="Player_Default" to="." method="_on_status_change"]

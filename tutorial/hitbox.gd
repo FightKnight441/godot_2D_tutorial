@@ -1,4 +1,4 @@
-extends Area2D
+class_name Hitbox extends Area2D
 
 #this is the "motion value". When a hitbox is activated, 
 #the actor's strength/spirit is multiplied by this value to get the dValue
@@ -38,12 +38,13 @@ func _on_body_entered(body):
 					fDirection = global_position
 				if (body is Actor2D && body.get_invulnerable() == false):
 						body.deliver_hit(dType, dValue, sType, sValue, fValue, fDirection, groups)
+						ignoreId.append(body.get_instance_id())
 				
 
 func activate(strength : float, spirit : float):
 	dValue = strength * damageMultiplier
 	sValue = spirit * statusMultiplier
-	$CollisionShape2D.disabled = false
+	$CollisionShape2D.set_deferred("disabled", false)
 
 func deactivate():
 	ignoreId.clear()

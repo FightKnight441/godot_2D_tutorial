@@ -2,15 +2,16 @@
 
 [ext_resource type="Script" uid="uid://be7uyt6twik38" path="res://enemy_2d.gd" id="1_jdjun"]
 
-[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_jdjun"]
-radius = 654.0
-height = 1608.0
+[sub_resource type="CircleShape2D" id="CircleShape2D_jdjun"]
+radius = 1000.0
 
 [node name="Enemy2D" type="CharacterBody2D"]
+motion_mode = 1
 script = ExtResource("1_jdjun")
 metadata/_custom_type_script = "uid://b52tmx66i3s4h"
+metadata/_edit_group_ = true
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." groups=["mobs"]]
 y_sort_enabled = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
@@ -21,7 +22,7 @@ collision_layer = 2
 
 [node name="SightRange" type="CollisionShape2D" parent="Sight"]
 rotation = 1.5707964
-shape = SubResource("CapsuleShape2D_jdjun")
+shape = SubResource("CircleShape2D_jdjun")
 debug_color = Color(0.14117648, 0.7411765, 0.2901961, 0.41960785)
 
 [node name="SearchTimer" type="Timer" parent="."]

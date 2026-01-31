@@ -12,9 +12,8 @@
 [ext_resource type="Texture2D" uid="uid://vn8f3mdjspml" path="res://art/FluffClaw/FluffClaw_0002.png" id="8_6s5wa"]
 [ext_resource type="Texture2D" uid="uid://ixtanviy5bal" path="res://art/FluffClaw/FluffClaw_0003.png" id="9_rld52"]
 
-[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_h2prw"]
-radius = 654.0
-height = 1608.0
+[sub_resource type="CircleShape2D" id="CircleShape2D_kcu5p"]
+radius = 700.0
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_7dpfh"]
 animations = [{
@@ -84,6 +83,7 @@ radius = 90.0
 [node name="FluffClaw" type="CharacterBody2D" groups=["mobs"]]
 collision_layer = 2
 collision_mask = 3
+motion_mode = 1
 script = ExtResource("1_h2prw")
 hitboxActiveFrameList = Array[Dictionary]([{
 "animation": &"Pounce",
@@ -97,8 +97,9 @@ scale = Vector2(0.5, 0.5)
 collision_layer = 2
 
 [node name="SightRange" type="CollisionShape2D" parent="Sight"]
+y_sort_enabled = true
 rotation = 1.5707964
-shape = SubResource("CapsuleShape2D_h2prw")
+shape = SubResource("CircleShape2D_kcu5p")
 debug_color = Color(0.14117648, 0.7411765, 0.2901961, 0.41960785)
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
@@ -112,9 +113,9 @@ position = Vector2(0, -15)
 scale = Vector2(6, 6)
 collision_layer = 0
 damageMultiplier = 1.0
+dType = 1
 dValue = 24.0
-sType = 2
-fValue = 1000.0
+fValue = 2000.0
 groups = Array[String](["player"])
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]

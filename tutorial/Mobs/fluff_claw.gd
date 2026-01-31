@@ -36,7 +36,7 @@ func _ready() -> void:
 	
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
+func _physics_process(delta: float) -> void:
 	early_process_common(delta)
 	
 	#identifyGoal
@@ -90,7 +90,7 @@ func _process(delta: float) -> void:
 		DYING:
 			$AnimatedSprite2D.self_modulate = Color(1.0,1.0,1.0,$DeathFadeTimer.get_time_left()/deathFadeMaxTime)
 			
-	late_process_common(delta)
+	super._physics_process(delta)
 	
 
 func deliver_hit(dType, dValue, sType, sValue, fValue, fDirection, groups):
@@ -137,7 +137,7 @@ func _on_frame_changed():
 		if ($AnimatedSprite2D.frame == 6):
 			grounded = false
 			run_toward_target((target - global_position).normalized(), 3.0)
-			$PounceAttack.fDirection = target
+			$PounceAttack.fDirection = facing
 
 
 func _on_timeout():

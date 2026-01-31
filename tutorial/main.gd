@@ -24,6 +24,7 @@ func game_over():
 	$HUD.show_game_over()
 	$Music.stop()
 	$DeathSound.play()
+	get_tree().call_group("mobs", "queue_free")
 
 func new_game():
 	print("Debug: new_game called")
@@ -33,7 +34,7 @@ func new_game():
 	$Player_Default.start($StartPosition.position)
 	$StartTimer.start()
 	$HUD.update_score(score)
-	get_tree().call_group("mobs", "queue_free")
+	#get_tree().call_group("mobs", "queue_free")
 
 func _on_mob_timer_timeout():
 	# Create a new instance of the Mob scene.

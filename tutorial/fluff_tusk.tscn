@@ -1,0 +1,140 @@
+[gd_scene load_steps=17 format=3 uid="uid://opc6cuydykwt"]
+
+[ext_resource type="PackedScene" uid="uid://dvby2wtrf1wg6" path="res://enemy_2d.tscn" id="1_6ejit"]
+[ext_resource type="Script" uid="uid://bwseyh4ejhedo" path="res://fluff_tusk.gd" id="2_7icej"]
+[ext_resource type="Texture2D" uid="uid://csvrrrxybsfpl" path="res://art/FluffTusk/FluffTusk_0011.png" id="2_w7e48"]
+[ext_resource type="Texture2D" uid="uid://b3af3t04msuf4" path="res://art/FluffTusk/FluffTusk_0010.png" id="3_7icej"]
+[ext_resource type="Texture2D" uid="uid://firgrxm71ssd" path="res://art/FluffTusk/FluffTusk_0003.png" id="4_6vae5"]
+[ext_resource type="Texture2D" uid="uid://dmg4x4elm1ab4" path="res://art/FluffTusk/FluffTusk_0002.png" id="5_t22ej"]
+[ext_resource type="Texture2D" uid="uid://c0dnv4b61dfrd" path="res://art/FluffTusk/FluffTusk_0004.png" id="6_w655h"]
+[ext_resource type="Texture2D" uid="uid://dxfr7lg1b5mb2" path="res://art/FluffTusk/FluffTusk_0001.png" id="7_su3mt"]
+[ext_resource type="Texture2D" uid="uid://tmnkch2fu7w6" path="res://art/FluffTusk/FluffTusk_0007.png" id="8_jnwaa"]
+[ext_resource type="Texture2D" uid="uid://ctiwuvuev8dcd" path="res://art/FluffTusk/FluffTusk_0008.png" id="9_d1bae"]
+[ext_resource type="Texture2D" uid="uid://dk0j0ysiqpwax" path="res://art/FluffTusk/FluffTusk_0009.png" id="10_w64h0"]
+[ext_resource type="Texture2D" uid="uid://cj8ob02d370ag" path="res://art/FluffTusk/FluffTusk_0005.png" id="11_hent5"]
+[ext_resource type="Texture2D" uid="uid://n87lywsx87v1" path="res://art/FluffTusk/FluffTusk_0006.png" id="12_p4ywo"]
+[ext_resource type="PackedScene" uid="uid://b3iyfb2gg0mw6" path="res://hitbox.tscn" id="14_6vae5"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_xr26s"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_w7e48")
+}],
+"loop": true,
+"name": &"DEAD",
+"speed": 7.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_7icej")
+}],
+"loop": false,
+"name": &"FLINCHING",
+"speed": 7.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("4_6vae5")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_t22ej")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_w655h")
+}],
+"loop": true,
+"name": &"RUNNING",
+"speed": 7.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("5_t22ej")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_su3mt")
+}],
+"loop": true,
+"name": &"STANDING",
+"speed": 7.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("8_jnwaa")
+}],
+"loop": false,
+"name": &"TUSK_ATTACK_ACTIVE",
+"speed": 7.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("9_d1bae")
+}, {
+"duration": 1.0,
+"texture": ExtResource("10_w64h0")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_su3mt")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_t22ej")
+}],
+"loop": false,
+"name": &"TUSK_ATTACK_RECOVERY",
+"speed": 7.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("11_hent5")
+}, {
+"duration": 1.0,
+"texture": ExtResource("12_p4ywo")
+}, {
+"duration": 1.0,
+"texture": ExtResource("11_hent5")
+}, {
+"duration": 1.0,
+"texture": ExtResource("12_p4ywo")
+}, {
+"duration": 1.0,
+"texture": ExtResource("11_hent5")
+}, {
+"duration": 1.0,
+"texture": ExtResource("12_p4ywo")
+}, {
+"duration": 1.0,
+"texture": ExtResource("11_hent5")
+}],
+"loop": false,
+"name": &"TUSK_ATTACK_STARTUP",
+"speed": 7.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_6vae5"]
+radius = 101.72129
+
+[node name="FluffTusk" instance=ExtResource("1_6ejit")]
+scale = Vector2(1.2, 1.2)
+script = ExtResource("2_7icej")
+hitboxActiveFrameList = Array[Dictionary]([{
+"animation": &"TUSK_ATTACK_ACTIVE",
+"frame": 0,
+"hitbox": "TuskAttack"
+}])
+
+[node name="AnimatedSprite2D" parent="." index="0"]
+position = Vector2(0, -10)
+sprite_frames = SubResource("SpriteFrames_xr26s")
+animation = &"TUSK_ATTACK_ACTIVE"
+
+[node name="CollisionShape2D" parent="." index="1"]
+shape = SubResource("CircleShape2D_6vae5")
+
+[node name="TuskAttack" parent="." index="5" instance=ExtResource("14_6vae5")]
+scale = Vector2(17, 17)
+collision_layer = 0
+damageMultiplier = 1.0
+dType = 3
+dValue = 36.0
+fDirection = Vector2(-5000, 0)
+groups = Array[String](["player"])

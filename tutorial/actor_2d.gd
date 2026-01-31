@@ -3,8 +3,8 @@ class_name Actor2D extends CharacterBody2D
 signal health_hit_0
 signal stamina_hit_0
 
-var sprite : AnimatedSprite2D
-var collision : CollisionShape2D
+var sprite
+var collision
 
 #defense damage reduction coefficient, 
 #this is to adjust the reduction number so that defense is soft bounded
@@ -27,7 +27,7 @@ var staminaRegen = true
 @export var spirit : float = 6 #not yet used to incerase special ability effects
 
 @export var speed : float = 100 # How fast the player will move (pixels/sec).
-@export var friction : float = 15 #1/x of speed per second or something liek that
+@export var friction : float = 10 #1/x of speed per second or something liek that
 @export var grounded = true
 var facing : Vector2 = Vector2.LEFT
 
@@ -45,20 +45,20 @@ var activeHitboxList : Array[String]
 @export var forceReduction : float = 1.0
 
 #mulitplier for each damage type. A higher number receives more damage
-@export var vulnerability = {
-	effectData.damageType.NONE: 1.0,
-	effectData.damageType.SLASH: 1.0,
-	effectData.damageType.STRIKE: 1.0,
-	effectData.damageType.PIERCE: 1.0,
-	effectData.damageType.SONIC: 1.0,
-	effectData.damageType.FIRE: 1.0,
-	effectData.damageType.ICE: 1.0,
-	effectData.damageType.ELECTRIC: 1.0
+@export var vulnerability : Dictionary[effectData.damageType, float] = {
+	effectData.damageType.NONE : 1.0,
+	effectData.damageType.SLASH : 1.0,
+	effectData.damageType.STRIKE : 1.0,
+	effectData.damageType.PIERCE : 1.0,
+	effectData.damageType.SONIC : 1.0,
+	effectData.damageType.FIRE : 1.0,
+	effectData.damageType.ICE : 1.0,
+	effectData.damageType.ELECTRIC : 1.0
 }
 
 func _physics_process(delta: float) -> void:
-	perform_friction(delta)
 	move_and_slide() 
+	perform_friction(delta)
 
 #gather data from a hitbox and use it to determine the effect of the hitbox
 #This is expected to be overridden in some cases, but generally used
@@ -106,7 +106,7 @@ func deliver_hit(dType : effectData.damageType, dValue : float,
 			velocity += floor(fValue / forceReduction * (fDirection - global_position).normalized())
 		else:
 			#move in direction specified, regardless of orientation compared to hitbox
-			velocity += floor((fValue / forceReduction) * fDirection.normalized())
+			velocity += ((fValue / forceReduction) * fDirection.normalized()).floor()
 	
 func flip_sprite_with_facing():
 	if (facing.x < 0):
@@ -118,10 +118,6 @@ func early_process_common(delta : float):
 	if (staminaRegen): 
 		add_stamina(staminaRegenRate * delta) #recover stamina at normal rate
 		
-func late_process_common(_delta:float):
-	if (invulnerable):
-		var intensity = 1 + (0.353 * ((Time.get_ticks_msec() % 250)/250.0))
-		$AnimatedSprite2D.self_modulate = Color(intensity, intensity/2, intensity/2)
 
 func perform_friction(delta : float):
 	#slow down due to friction
@@ -151,6 +147,10 @@ func activate_hitboxes():
 			activeHitboxList.append(x["hitbox"])
 			
 func _on_frame_changed():
+	deactivate_hitboxes()
+	activate_hitboxes()
+	
+func _on_animation_changed():
 	deactivate_hitboxes()
 	activate_hitboxes()
 	
