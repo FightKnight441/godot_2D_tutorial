@@ -65,12 +65,14 @@ func _physics_process(delta: float) -> void:
 func deliver_hit(dType : effectData.damageType, dValue : float,
 	 			_sType : effectData.statusType, _sValue : float,
 	 			fValue : float, fDirection : Vector2, groups : Array[String]):
+	#print ("hit!")
 	if (invulnerable == true):
 		return
 	var do_damage = false
 	for x in groups:
 		if self.is_in_group(x):
 			do_damage = true
+	#print ("inGroup and not invuln!")
 	if do_damage:
 		var damage : float = 0.0
 		var reduction : float = 1.0
@@ -107,6 +109,8 @@ func deliver_hit(dType : effectData.damageType, dValue : float,
 		else:
 			#move in direction specified, regardless of orientation compared to hitbox
 			velocity += ((fValue / forceReduction) * fDirection.normalized()).floor()
+	#print ("Damage Done!")
+	
 	
 func flip_sprite_with_facing():
 	if (facing.x < 0):

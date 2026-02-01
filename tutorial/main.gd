@@ -13,8 +13,6 @@ func _ready():
 	var window_size = get_viewport().get_visible_rect().size
 	print("Window size: ", window_size)
 	
-	
-	
 	$MobPath.draw_beyond_screen()
 	
 
