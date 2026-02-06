@@ -25,16 +25,13 @@ point_count = 5
 script = ExtResource("1_0xm2m")
 mob_scene = ExtResource("9_kek77")
 
-[node name="ColorRect" type="ColorRect" parent="."]
-visible = false
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-color = Color(0.173439, 0.761175, 0.901236, 1)
+[node name="PlayerCamera" type="Camera2D" parent="."]
+position = Vector2(23, 351.00003)
+scale = Vector2(0.8, 0.8)
+script = ExtResource("8_ycdy4")
 
 [node name="Background" type="Sprite2D" parent="."]
+visible = false
 position = Vector2(991, 559)
 texture = ExtResource("3_kek77")
 
@@ -52,9 +49,6 @@ volume_db = -25.0
 
 [node name="Player_Default" parent="." instance=ExtResource("7_4c57u")]
 position = Vector2(23, 351.00003)
-
-[node name="PlayerCamera" type="Camera2D" parent="Player_Default"]
-script = ExtResource("8_ycdy4")
 
 [node name="MobTimer" type="Timer" parent="."]
 wait_time = 2.0
@@ -105,7 +99,7 @@ player_node = NodePath("../../../Player_Default")
 position = Vector2(143.83, 173.73)
 
 [node name="FluffTusk" parent="." instance=ExtResource("9_w48qg")]
-position = Vector2(536, 651)
+position = Vector2(1078, -2487)
 
 [connection signal="player_death" from="Player_Default" to="." method="game_over"]
 [connection signal="status_change" from="Player_Default" to="." method="_on_status_change"]
