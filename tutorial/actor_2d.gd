@@ -1,5 +1,7 @@
 class_name Actor2D extends CharacterBody2D
 
+@export var debug = false
+
 signal health_hit_0
 signal stamina_hit_0
 
@@ -12,23 +14,23 @@ var collision
 #DDRC = 0.01 results in 6~95%, 30~71%, 100~30%, 120 ~22.5%, 205~10%, 300~5% damage
 const DDRC : float = 0.01
 
-@export var maxHealth : float = 30
-@export var health : float = 30
+var maxHealth : float = 30
+var health : float = 30
 var invulnerable = false
 
-@export var maxStamina : float = 30
-@export var stamina : float = 30
-@export var staminaRegenRate : float = 6.0
+var maxStamina : float = 30
+var stamina : float = 30
+var staminaRegenRate : float = 6.0
 var staminaRegen = true
 
-@export var defense : float = 6 #not yet used to reduce incoming physical damage
-@export var resistance : float = 6 #not yet used to reduce incoming energy damage
-@export var strength : float = 6 #not yet used to increase physical damage
-@export var spirit : float = 6 #not yet used to incerase special ability effects
+var defense : float = 6 #not yet used to reduce incoming physical damage
+var resistance : float = 6 #not yet used to reduce incoming energy damage
+var strength : float = 6 #not yet used to increase physical damage
+var spirit : float = 6 #not yet used to incerase special ability effects
 
-@export var speed : float = 100 # How fast the player will move (pixels/sec).
-@export var friction : float = 10 #1/x of speed per second or something liek that
-@export var grounded = true
+var speed : float = 100 # How fast the player will move (pixels/sec).
+var friction : float = 10 #1/x of speed per second or something liek that
+var grounded = true
 var facing : Vector2 = Vector2.LEFT
 
 #the list of active hitboxes should only include hitboxes 
@@ -42,10 +44,10 @@ var activeHitboxList : Array[String]
 #@export var poise : float = 1.0
 
 #DIVISOR for amount of force received from a hitbox
-@export var forceReduction : float = 1.0
+var forceReduction : float = 1.0
 
 #mulitplier for each damage type. A higher number receives more damage
-@export var vulnerability : Dictionary[effectData.damageType, float] = {
+var vulnerability : Dictionary[effectData.damageType, float] = {
 	effectData.damageType.NONE : 1.0,
 	effectData.damageType.SLASH : 1.0,
 	effectData.damageType.STRIKE : 1.0,
