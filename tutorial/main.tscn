@@ -1,7 +1,8 @@
-[gd_scene load_steps=23 format=3 uid="uid://c1exjjpa0q8d1"]
+[gd_scene load_steps=16 format=3 uid="uid://c1exjjpa0q8d1"]
 
 [ext_resource type="Script" uid="uid://11revall2wfd" path="res://main.gd" id="1_0xm2m"]
 [ext_resource type="AudioStream" uid="uid://mse4efe8qx3u" path="res://art/House In a Forest Loop.ogg" id="3_7mycd"]
+[ext_resource type="Texture2D" uid="uid://dih82r0sbaf73" path="res://art/Background/Background_level_1.jpg" id="3_kek77"]
 [ext_resource type="PackedScene" uid="uid://dm5qri4m3uh6f" path="res://hud.tscn" id="4_1bvp3"]
 [ext_resource type="AudioStream" uid="uid://prhrkishl5od" path="res://art/gameover.wav" id="4_272bh"]
 [ext_resource type="Script" uid="uid://dik144f5oxghy" path="res://mob_path.gd" id="6_272bh"]
@@ -12,42 +13,30 @@
 [ext_resource type="PackedScene" uid="uid://opc6cuydykwt" path="res://fluff_tusk.tscn" id="9_w48qg"]
 [ext_resource type="PackedScene" uid="uid://bxyteby4x84oc" path="res://Items/health_orb.tscn" id="10_4c57u"]
 [ext_resource type="Script" uid="uid://b6iqqf8evu8gs" path="res://sub_viewport.gd" id="11_dg77c"]
-[ext_resource type="Texture2D" uid="uid://by4b8xodh62hq" path="res://art/mapArt/Snowy/SnowyGround.png" id="14_w48qg"]
-[ext_resource type="Texture2D" uid="uid://crbvlpx8sa66l" path="res://art/mapArt/Snowy/Snowy_objects_tree.png" id="14_yaehf"]
-[ext_resource type="Texture2D" uid="uid://b15rcju1y3wt4" path="res://art/mapArt/Snowy/Snowy_objects_boulder.png" id="15_074og"]
-[ext_resource type="Texture2D" uid="uid://c4228bndiabuk" path="res://art/mapArt/Snowy/Snowy_objects_dead_tree.png" id="16_cegan"]
-[ext_resource type="Texture2D" uid="uid://6h4cqle6q1oo" path="res://art/mapArt/Snowy/Snowy_objects_bush.png" id="17_82xsv"]
+[ext_resource type="PackedScene" uid="uid://d1o1o1x5iunh1" path="res://examplemap.tscn" id="11_efxa6"]
 
 [sub_resource type="Curve2D" id="Curve2D_h2yge"]
 _data = {
-"points": PackedVector2Array(0, 0, 0, 0, -1453, -787, 0, 0, 0, 0, 1625, -791, 0, 0, 0, 0, 1638, 1424, 0, 0, 0, 0, -1439, 1410, 0, 0, 0, 0, -1453, -791)
+"points": PackedVector2Array(0, 0, 0, 0, -143, -130, 0, 0, 0, 0, 544, -64, 0, 0, 0, 0, 824, 819, 0, 0, 0, 0, -64, 768, 0, 0, 0, 0, -64, -64)
 }
 point_count = 5
 
-[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_vivmo"]
-normal = Vector2(0, 1)
-
-[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_2cqfq"]
-
-[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_yaehf"]
-normal = Vector2(1, 0)
-
-[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_074og"]
-normal = Vector2(-1, 0)
-
-[node name="Main" type="Node2D"]
-y_sort_enabled = true
+[node name="Main" type="Node"]
 script = ExtResource("1_0xm2m")
 mob_scene = ExtResource("9_kek77")
 
-[node name="ColorRect" type="ColorRect" parent="."]
+[node name="PlayerCamera" type="Camera2D" parent="."]
+position = Vector2(23, 351.00003)
+scale = Vector2(0.8, 0.8)
+script = ExtResource("8_ycdy4")
+
+[node name="Background" type="Sprite2D" parent="."]
 visible = false
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-color = Color(0.173439, 0.761175, 0.901236, 1)
+position = Vector2(991, 559)
+texture = ExtResource("3_kek77")
+
+[node name="MapParent" parent="." instance=ExtResource("11_efxa6")]
+position = Vector2(335, 348)
 
 [node name="Music" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("3_7mycd")
@@ -61,11 +50,8 @@ volume_db = -25.0
 [node name="Player_Default" parent="." instance=ExtResource("7_4c57u")]
 position = Vector2(23, 351.00003)
 
-[node name="PlayerCamera" type="Camera2D" parent="Player_Default"]
-script = ExtResource("8_ycdy4")
-
 [node name="MobTimer" type="Timer" parent="."]
-wait_time = 10.0
+wait_time = 2.0
 
 [node name="ScoreTimer" type="Timer" parent="."]
 wait_time = 10.0
@@ -85,8 +71,8 @@ curve = SubResource("Curve2D_h2yge")
 script = ExtResource("6_272bh")
 
 [node name="MobSpawnLocation" type="PathFollow2D" parent="MobPath"]
-position = Vector2(-1453, -787)
-rotation = -0.0012995445
+position = Vector2(-143, -130)
+rotation = 0.09577594
 
 [node name="HUD" parent="." instance=ExtResource("4_1bvp3")]
 
@@ -113,60 +99,7 @@ player_node = NodePath("../../../Player_Default")
 position = Vector2(143.83, 173.73)
 
 [node name="FluffTusk" parent="." instance=ExtResource("9_w48qg")]
-position = Vector2(536, 651)
-
-[node name="Level" type="Node2D" parent="."]
-y_sort_enabled = true
-
-[node name="BoundingBox" type="StaticBody2D" parent="Level"]
-position = Vector2(-2, -740)
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Level/BoundingBox"]
-shape = SubResource("WorldBoundaryShape2D_vivmo")
-
-[node name="CollisionShape2D2" type="CollisionShape2D" parent="Level/BoundingBox"]
-position = Vector2(1, 2105)
-shape = SubResource("WorldBoundaryShape2D_2cqfq")
-
-[node name="CollisionShape2D3" type="CollisionShape2D" parent="Level/BoundingBox"]
-position = Vector2(-1424, 1195)
-shape = SubResource("WorldBoundaryShape2D_yaehf")
-
-[node name="CollisionShape2D4" type="CollisionShape2D" parent="Level/BoundingBox"]
-position = Vector2(1612, 1153)
-shape = SubResource("WorldBoundaryShape2D_074og")
-
-[node name="Ground" type="Polygon2D" parent="Level"]
-z_index = -10
-texture_repeat = 2
-position = Vector2(500, 0)
-texture = ExtResource("14_w48qg")
-polygon = PackedVector2Array(71, -1031, 2556, -1028, 2582, 944, 2581, 2192, 186, 2192, -2261, 2202, -2224, 324, -2190, -1058)
-
-[node name="Area2D" type="Sprite2D" parent="Level"]
-
-[node name="SouthBound" type="Area2D" parent="Level"]
-position = Vector2(-1, 1365)
-
-[node name="Sprite2D" type="Sprite2D" parent="Level"]
-y_sort_enabled = true
-position = Vector2(-4, -948)
-texture = ExtResource("14_yaehf")
-
-[node name="Sprite2D2" type="Sprite2D" parent="Level"]
-y_sort_enabled = true
-position = Vector2(8, 1479)
-texture = ExtResource("15_074og")
-
-[node name="Sprite2D3" type="Sprite2D" parent="Level"]
-y_sort_enabled = true
-position = Vector2(-1441, 313)
-texture = ExtResource("16_cegan")
-
-[node name="Sprite2D4" type="Sprite2D" parent="Level"]
-y_sort_enabled = true
-position = Vector2(1734, 359)
-texture = ExtResource("17_82xsv")
+position = Vector2(1078, -2487)
 
 [connection signal="player_death" from="Player_Default" to="." method="game_over"]
 [connection signal="status_change" from="Player_Default" to="." method="_on_status_change"]
