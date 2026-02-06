@@ -38,7 +38,6 @@ shape = SubResource("CircleShape2D_dg77c")
 
 [node name="Hitbox" parent="." instance=ExtResource("4_sxmqc")]
 scale = Vector2(2.2, 2.2)
-collision_layer = 2
 collision_mask = 2
 damageMultiplier = 1.0
 dType = 5

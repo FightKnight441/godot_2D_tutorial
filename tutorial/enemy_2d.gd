@@ -180,7 +180,7 @@ func knockedout_process_state():
 func dying_process_state():
 	pass
 func dead_process_state():
-	pass
+	$AnimatedSprite2D.self_modulate = Color(1.0,1.0,1.0,$DeathFadeTimer.get_time_left()/deathFadeMaxTime)
 
 func process_idle_goal():
 	pass
@@ -232,10 +232,19 @@ func _on_body_sight(body):
 func _on_frame_changed():
 	super._on_frame_changed()
 	
+func _on_animation_changed():
+	pass
+		
+func _on_animation_finished():
+	if (health <= 0 && sprite.animation == "FLINCHING"):
+		sprite.animation = "DEAD"
+		state = states["DEAD"]
+		$DeathFadeTimer.start()
+	
 func _on_death_timeout():
 	queue_free()
 	
-func on_health_depleted():
+func health_depleted():
 	goal = goals["IDLE"]
 	state = states["FLINCHING"]
 	$CollisionShape2D.set_deferred("disabled", true)
