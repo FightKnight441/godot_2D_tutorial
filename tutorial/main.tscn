@@ -17,7 +17,7 @@
 
 [sub_resource type="Curve2D" id="Curve2D_h2yge"]
 _data = {
-"points": PackedVector2Array(0, 0, 0, 0, -143, -130, 0, 0, 0, 0, 544, -64, 0, 0, 0, 0, 824, 819, 0, 0, 0, 0, -64, 768, 0, 0, 0, 0, -64, -64)
+"points": PackedVector2Array(0, 0, 0, 0, -1128, -1071.1146, 0, 0, 0, 0, 1830, -1075.0376, 0, 0, 0, 0, 1815, 1825.6304, 0, 0, 0, 0, -1103, 1827.6002, 0, 0, 0, 0, -1126, -1029.7467)
 }
 point_count = 5
 
@@ -61,22 +61,24 @@ wait_time = 2.0
 one_shot = true
 
 [node name="StartPosition" type="Marker2D" parent="."]
-position = Vector2(240, 450)
+position = Vector2(336, 310)
 
 [node name="ShootingMarker" type="Marker2D" parent="."]
 script = ExtResource("6_kek77")
 
 [node name="MobPath" type="Path2D" parent="."]
+position = Vector2(0, -18.52135)
+scale = Vector2(1, 1.0152775)
 curve = SubResource("Curve2D_h2yge")
 script = ExtResource("6_272bh")
 
 [node name="MobSpawnLocation" type="PathFollow2D" parent="MobPath"]
-position = Vector2(-143, -130)
-rotation = 0.09577594
+position = Vector2(-1128, -1071.1146)
+rotation = -0.0013262243
 
 [node name="HUD" parent="." instance=ExtResource("4_1bvp3")]
 
-[node name="SubViewportContainer2" type="SubViewportContainer" parent="HUD"]
+[node name="miniMapContainer" type="SubViewportContainer" parent="HUD"]
 anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
@@ -85,21 +87,27 @@ offset_bottom = 300.0
 grow_horizontal = 0
 stretch = true
 
-[node name="SubViewport" type="SubViewport" parent="HUD/SubViewportContainer2" node_paths=PackedStringArray("camera_node", "player_node")]
+[node name="miniMap" type="SubViewport" parent="HUD/miniMapContainer" node_paths=PackedStringArray("camera_node", "player_node")]
 handle_input_locally = false
 size = Vector2i(333, 300)
 render_target_update_mode = 4
 script = ExtResource("11_dg77c")
-camera_node = NodePath("Camera2D")
+camera_node = NodePath("miniMapCam")
 player_node = NodePath("../../../Player_Default")
 
-[node name="Camera2D" type="Camera2D" parent="HUD/SubViewportContainer2/SubViewport"]
+[node name="miniMapCam" type="Camera2D" parent="HUD/miniMapContainer/miniMap"]
 
 [node name="HealthOrb" parent="." instance=ExtResource("10_4c57u")]
-position = Vector2(143.83, 173.73)
+position = Vector2(2561, -3760)
 
 [node name="FluffTusk" parent="." instance=ExtResource("9_w48qg")]
-position = Vector2(1078, -2487)
+position = Vector2(1503, -3771)
+
+[node name="HealthOrb2" parent="." instance=ExtResource("10_4c57u")]
+position = Vector2(2047, -4899)
+
+[node name="HealthOrb3" parent="." instance=ExtResource("10_4c57u")]
+position = Vector2(142, -4215)
 
 [connection signal="player_death" from="Player_Default" to="." method="game_over"]
 [connection signal="status_change" from="Player_Default" to="." method="_on_status_change"]

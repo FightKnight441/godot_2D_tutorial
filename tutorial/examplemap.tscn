@@ -182,7 +182,7 @@ physics_layer_0/collision_layer = 1
 sources/2 = SubResource("TileSetAtlasSource_sv8jb")
 
 [node name="MapParent" type="Node2D"]
-scale = Vector2(2, 2)
+scale = Vector2(3, 3)
 metadata/_edit_group_ = true
 
 [node name="TileMapGround" type="TileMapLayer" parent="."]
