@@ -1,6 +1,7 @@
 extends Path2D
 
 func draw_beyond_screen():
+	return
 	var viewport = get_viewport_rect()
 	
 	var offset = 50
