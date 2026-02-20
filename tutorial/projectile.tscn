@@ -1,9 +1,10 @@
-[gd_scene load_steps=7 format=3 uid="uid://b1pqf7rtm64bc"]
+[gd_scene load_steps=9 format=3 uid="uid://b1pqf7rtm64bc"]
 
 [ext_resource type="Script" uid="uid://c2tmr3sxlsa4c" path="res://projectile.gd" id="1_dgwo2"]
 [ext_resource type="Texture2D" uid="uid://dbw37orx5bmsv" path="res://art/projectiles/projectile_1.png" id="2_sxmqc"]
 [ext_resource type="Texture2D" uid="uid://djdb74ws6v1wc" path="res://art/projectiles/projectile_2.png" id="3_2xblw"]
 [ext_resource type="PackedScene" uid="uid://b3iyfb2gg0mw6" path="res://hitbox.tscn" id="4_sxmqc"]
+[ext_resource type="Texture2D" uid="uid://dm0dal6huo2wu" path="res://art/projectiles/fireBall_particles.png" id="5_2xblw"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_ycdy4"]
 animations = [{
@@ -21,6 +22,18 @@ animations = [{
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_dg77c"]
 radius = 21.61
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_sxmqc"]
+lifetime_randomness = 0.35
+particle_flag_disable_z = true
+emission_shape = 1
+emission_sphere_radius = 20.0
+gravity = Vector3(0, 98, 0)
+turbulence_enabled = true
+turbulence_noise_strength = 0.0
+sub_emitter_mode = 4
+sub_emitter_amount_at_start = 8
+sub_emitter_keep_velocity = true
 
 [node name="Projectile" type="Area2D" groups=["projectiles"]]
 scale = Vector2(0.5, 0.5)
@@ -45,5 +58,11 @@ dValue = 30.0
 groups = Array[String](["mobs"])
 
 [node name="DeathTimer" type="Timer" parent="."]
+
+[node name="GPUParticles2D" type="GPUParticles2D" parent="."]
+texture = ExtResource("5_2xblw")
+randomness = 1.0
+fixed_fps = 16
+process_material = SubResource("ParticleProcessMaterial_sxmqc")
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]
